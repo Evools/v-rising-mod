@@ -42,9 +42,14 @@ const getGroupStyle = (group: string) => {
       border: "border-amber-400/20",
       icon: <Crown className="w-4 h-4" />,
     },
-    RPG: {
-      color: "text-blue-400",
-      border: "border-blue-400/20",
+    Классы: {
+      color: "text-purple-400",
+      border: "border-purple-400/20",
+      icon: <Zap className="w-4 h-4" />,
+    },
+    Оружие: {
+      color: "text-blue-500",
+      border: "border-blue-500/20",
       icon: <Sword className="w-4 h-4" />,
     },
     Логистика: {
@@ -86,7 +91,8 @@ function CommandsContent() {
   const categories = [
     "Все",
     "Основные",
-    "RPG",
+    "Классы",
+    "Оружие",
     "Престиж",
     "Наследие",
     "Фамильяры",
