@@ -375,6 +375,12 @@
   },
   {
     "group": "Престиж",
+    "cmd": ".prestige sb",
+    "desc": "Синхронизировать и активировать все бонусы престижа (применить баффы), желательно после смерти.",
+    "shortcut": ".prestige syncbuffs"
+  },
+  {
+    "group": "Престиж",
     "cmd": ".prestige me [Type]",
     "desc": "Провести ритуал престижа (Experience, Expertise или Legacy)"
   },
