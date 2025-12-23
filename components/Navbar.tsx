@@ -72,10 +72,10 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-3 outline-none group">
           <div className="flex flex-col border-l-2 border-primary pl-3">
             <span className="text-xl font-black tracking-[0.2em] leading-none text-white uppercase">
-              Blood
+              Court
             </span>
             <span className="text-[10px] font-black tracking-[0.55em] leading-none text-primary uppercase mt-1">
-              & Wine
+              of Darkness
             </span>
           </div>
         </Link>

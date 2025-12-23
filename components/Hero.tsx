@@ -63,19 +63,21 @@ export default function Hero() {
         <div className="flex items-center gap-4 mb-8 animate-in fade-in slide-in-from-top-4 duration-1000">
           <div className="h-px w-12 bg-primary/50" />
           <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
-            Established 2024
+            Established 2025
           </span>
           <div className="h-px w-12 bg-primary/50" />
         </div>
 
         {/* Главный заголовок */}
         <div className="animate-in fade-in zoom-in duration-1000">
-          <h1 className="font-serif text-[13vw] md:text-[140px] text-white font-normal tracking-tighter leading-none italic uppercase">
-            BLOOD{" "}
-            <span className="not-italic text-primary font-black drop-shadow-[0_0_30px_rgba(220,38,38,0.5)]">
-              /
+          <h1 className="font-serif text-[12vw] md:text-[80px] text-white font-black tracking-tighter leading-[0.8] uppercase italic">
+            BLOOD <br />
+            <span className="not-italic text-primary drop-shadow-[0_0_40px_rgba(220,38,38,0.6)]">
+              &
             </span>{" "}
-            WINE
+            <span className="text-white/30 not-italic font-light tracking-[-0.1em]">
+              CONQUEST
+            </span>
           </h1>
         </div>
 
