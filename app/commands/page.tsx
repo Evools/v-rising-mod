@@ -57,7 +57,7 @@ const getGroupStyle = (group: string) => {
       border: "border-red-500/20",
       icon: <Droplets className="w-4 h-4" />,
     },
-    Бой: {
+    Фамильяры: {
       color: "text-orange-500",
       border: "border-orange-500/20",
       icon: <Zap className="w-4 h-4" />,
@@ -89,7 +89,7 @@ function CommandsContent() {
     "RPG",
     "Престиж",
     "Наследие",
-    "Бой",
+    "Фамильяры",
     "Логистика",
     "Мир",
   ];
