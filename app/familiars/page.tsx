@@ -68,21 +68,37 @@ export default function FamiliarsPage() {
       </div>
 
       <div className="container relative z-10 mx-auto px-4 pt-40 pb-20">
-        {/* ХЕДЕР (Sharp & Gothic) */}
-        <div className="max-w-4xl mb-24 animate-in fade-in slide-in-from-left-6 duration-1000">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-[2px] bg-primary" />
-            <span className="text-primary font-bold tracking-[0.5em] uppercase text-[10px]">
+        {/* HEADER SECTION - BESTIARY */}
+        <div className="max-w-5xl mb-32 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
               Bloodcraft Familiars Registry
             </span>
+            <div className="h-px w-24 bg-primary/20" />
           </div>
-          <h1 className="font-serif text-6xl md:text-8xl text-foreground mb-8 tracking-tighter uppercase leading-none italic">
-            Бестиарий <span className="not-italic text-primary">Душ</span>
+
+          <h1 className="font-serif text-[7vw] md:text-[90px] text-white font-black tracking-tighter leading-[0.85] uppercase italic mb-10">
+            БЕСТИАРИЙ <br />
+            <span className="not-italic text-primary drop-shadow-[0_0_40px_rgba(220,38,38,0.6)]">
+              ДУШ
+            </span>
           </h1>
-          <p className="max-w-2xl text-muted-foreground font-light text-xl leading-relaxed italic border-l-2 border-primary pl-8 bg-primary/5 py-4">
-            «Подчините себе эссенцию павших врагов. Боссы Вардорана теперь могут
-            служить вам, даруя свою силу и преданность.»
-          </p>
+
+          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5">
+            {/* Технические уголки в стиле HUD */}
+            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
+
+            <p className="max-w-xl text-white/50 text-base md:text-lg tracking-[0.15em] font-light uppercase italic leading-relaxed">
+              «Подчините себе эссенцию павших врагов. <br />
+              Боссы Вардорана теперь могут служить вам, <br />
+              даруя свою{" "}
+              <span className="text-white font-bold not-italic">
+                силу и преданность
+              </span>
+              .»
+            </p>
+          </div>
         </div>
 
         {/* ИНФО-КАРТОЧКИ (BRUTAL HUD) */}

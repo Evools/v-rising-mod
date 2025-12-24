@@ -17,6 +17,71 @@ import {
 import Image from "next/image";
 import { useSyncExternalStore } from "react";
 
+const professions = [
+  {
+    name: "Шахтерство",
+    code: "MN-01",
+    icon: <Pickaxe className="w-5 h-5" />,
+    bonus:
+      "Повышает кол-во лута собираемого с камней, руды и так же повышает шанс выпадения самоцветов и глины.",
+    stats: "Loot: +X% / Gems: +X%",
+  },
+  {
+    name: "Дровосек",
+    code: "WC-02",
+    icon: <Axe className="w-5 h-5" />,
+    bonus:
+      "Повышает кол-во лута собираемого с Деревьев и так же повышает шанс на выпадение саженцев.",
+    stats: "Yield: +X% / Saplings: +X%",
+  },
+  {
+    name: "Травничество",
+    code: "HR-03",
+    icon: <Shovel className="w-5 h-5" />,
+    bonus:
+      "Повышает кол-во лута которое собирается с грядок и травы а так же повышает шанс выпадения семян.",
+    stats: "Flora: +X% / Seeds: +X%",
+  },
+  {
+    name: "Рыбалка",
+    code: "FS-04",
+    icon: <Fish className="w-5 h-5" />,
+    bonus: "Дает (+1) рыбу при рыбалке за каждые [20] уровней прокачки.",
+    stats: "Scale: 1:20 Lvl",
+  },
+  {
+    name: "Алхимия",
+    code: "AL-05",
+    icon: <FlaskConical className="w-5 h-5" />,
+    bonus:
+      "Повышает время действия до (2 часов). Усиливает эффекты Силы Магии и Физ.Силы.",
+    stats: "Time: 120m / Potency: +X%",
+  },
+  {
+    name: "Кузнечное дело",
+    code: "BS-06",
+    icon: <Hammer className="w-5 h-5" />,
+    bonus:
+      "Прочность оружия (Лег. [7600]). Повышает физ.урон, когда оружие находится в руках.",
+    stats: "Dura: 7600 / Phys DMG",
+  },
+  {
+    name: "Ювелирное дело",
+    code: "JW-07",
+    icon: <Gem className="w-5 h-5" />,
+    bonus:
+      "Прочность Амулетов (До [2895]). Повышает силу магии надеваемых амулетов.",
+    stats: "Dura: 2895 / Spell PWR",
+  },
+  {
+    name: "Портняжное Дело",
+    code: "TL-08",
+    icon: <Shirt className="w-5 h-5" />,
+    bonus: "Прочность Брони (До [3273]). Повышает максимальное ХП.",
+    stats: "Dura: 3273 / Max HP",
+  },
+];
+
 const subscribe = () => () => {};
 const useIsClient = () =>
   useSyncExternalStore(
@@ -25,274 +90,205 @@ const useIsClient = () =>
     () => false
   );
 
-const professions = [
-  {
-    name: "Шахтерство",
-    icon: <Pickaxe className="w-6 h-6" />,
-    bonus:
-      "Повышает кол-во лута собираемого с камней, руды и так же повышает шанс выпадения самоцветов и глины с камней",
-  },
-  {
-    name: "Дровосек",
-    icon: <Axe className="w-6 h-6" />,
-    bonus:
-      "Повышает кол-во лута собираемого с Деревьев и так же повышает шанс на выпадение саженцев",
-  },
-  {
-    name: "Травничество",
-    icon: <Shovel className="w-6 h-6" />,
-    bonus:
-      "Повышает кол-во лута которое собирается с грядок и травы а так же повышает шанс выпадения семян",
-  },
-  {
-    name: "Рыбалка",
-    icon: <Fish className="w-6 h-6" />,
-    bonus: "Дает (+1) рыбу при рыбалке за каждые [20] ур прокачки",
-  },
-  {
-    name: "Алхимия",
-    icon: <FlaskConical className="w-6 h-6" />,
-    bonus:
-      "Повышает время действия зелий до (2 часов) а так же усиливает эффект зелий Повышающих  Силу Магии и Физ.Силу",
-  },
-  {
-    name: "Кузнечное дело",
-    icon: <Hammer className="w-6 h-6" />,
-    bonus:
-      "повышает прочность Создаваемого оружия (лег.оружии это [7600] прочности) и физ.урон когда вы держите оружие в руках",
-  },
-  {
-    name: "Ювелирное дело",
-    icon: <Gem className="w-6 h-6" />,
-    bonus:
-      "Повышает прочность Создаваемых Амулетов (до [2895] прочности) и повышает силу магии одеваемых амулетов",
-  },
-  {
-    name: "Портняжное Дело",
-    icon: <Shirt className="w-6 h-6" />,
-    bonus:
-      "Повышает прочность Создаваемой Брони (До [3273] прочности) и повышает максимальное ХП",
-  },
-];
-
 export default function WorldPage() {
   const isClient = useIsClient();
-
-  // Рендерим пустой контейнер на сервере для совпадения разметки
-  if (!isClient) return <div className="min-h-screen bg-[#0a0a0c]" />;
+  if (!isClient) return <div className="min-h-screen bg-[#050505]" />;
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground transition-colors duration-500 overflow-hidden font-sans selection:bg-primary/30 selection:text-white">
-      {/* ФОН (Строгий графичный стиль) */}
+    <main className="relative min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden selection:bg-primary">
+      {/* BACKGROUND & HUD (Тот же стиль, что в Hero) */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/bg-1.jpg"
-          alt="World"
+          alt="World Background"
           fill
-          priority
-          className="object-cover object-center opacity-[0.1] grayscale"
+          className="object-cover object-center opacity-10 grayscale"
         />
-        <div className="absolute inset-0 bg-background/90" />
-        <div className="absolute inset-0 bg-grid-white/[0.01] bg-[size:50px_50px]" />
+        {/* HUD Overlay */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#050505_100%)]" />
+        </div>
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 pt-40 pb-20">
-        {/* ЗАГОЛОВОК (Sharp Design) */}
-        <div className="max-w-4xl mb-24 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
-          <span className="text-primary font-bold tracking-[0.5em] uppercase text-[10px] block mb-4">
-            Vardoran Infrastructure Hub
-          </span>
-          <h1 className="font-serif text-6xl md:text-8xl text-foreground mb-8 tracking-tighter uppercase italic">
-            Мир и{" "}
-            <span className="not-italic text-primary font-black">
-              Экономика
+      {/* SIDE DATA (Вертикальный декор из Hero) */}
+      <div className="hidden xl:block absolute left-8 top-1/2 -translate-y-1/2 z-40 [writing-mode:vertical-lr] rotate-180 opacity-20">
+        <p className="text-[9px] font-black tracking-[1em] uppercase">
+          Economy_Module_v2.04
+        </p>
+      </div>
+      <div className="hidden xl:block absolute right-8 top-1/2 -translate-y-1/2 z-40 [writing-mode:vertical-lr] opacity-20">
+        <p className="text-[9px] font-black tracking-[1em] uppercase text-primary">
+          Data_Synchronized
+        </p>
+      </div>
+
+      <div className="container relative z-20 mx-auto px-4 pt-44 pb-32">
+        {/* HEADER SECTION */}
+        <div className="max-w-5xl mb-32 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
+              Infrastructure Hub
             </span>
+            <div className="h-px w-24 bg-primary/20" />
+          </div>
+
+          <h1 className="font-serif text-[7vw] md:text-[90px] text-white font-black tracking-tighter leading-[0.85] uppercase italic mb-10">
+            МИР <br />
+            <span className="not-italic text-primary drop-shadow-[0_0_40px_rgba(220,38,38,0.6)]">
+              &
+            </span>{" "}
+            ЭКОНОМИКА
           </h1>
-          <p className="text-muted-foreground font-light text-xl leading-relaxed max-w-2xl italic">
-            Фундаментальные системы выживания Blood and Wine. От промышленной
-            добычи ресурсов до глобального управления капиталом.
-          </p>
+
+          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5">
+            {/* Декоративные уголки для рамки цитаты */}
+            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
+
+            <p className="max-w-xl text-white/50 text-base md:text-lg tracking-widest font-light uppercase italic leading-relaxed">
+              «Ремесло — это фундамент, на котором <br />
+              зиждется твое{" "}
+              <span className="text-white font-bold not-italic">величие</span>»
+            </p>
+          </div>
         </div>
 
-        {/* ПРОФЕССИИ (Brutalist Grid) */}
-        <section className="mb-32">
-          <div className="flex items-center gap-6 mb-16">
-            <h2 className="font-serif text-3xl text-foreground uppercase tracking-widest italic">
-              Ремесла <span className="text-primary">Вардорана</span>
-            </h2>
-            <div className="flex-1 h-px bg-white/5" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-border shadow-[20px_20px_0px_rgba(0,0,0,0.3)]">
-            {professions.map((p) => (
-              <div
-                key={p.name}
-                className="group p-12 bg-background hover:bg-white/[0.02] transition-all duration-300 border-r last:border-r-0 border-border relative overflow-hidden"
-              >
-                {/* Акцентная полоса сверху */}
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-
-                <div className="mb-8 text-primary group-hover:translate-x-2 transition-transform duration-500">
+        {/* PROFESSIONS GRID (Brutalist Style) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 mb-20 shadow-2xl">
+          {professions.map((p) => (
+            <div
+              key={p.code}
+              className="group relative p-8 bg-[#050505] hover:bg-white/[0.02] transition-all duration-300"
+            >
+              <div className="flex justify-between items-start mb-12">
+                <div className="text-primary group-hover:scale-110 transition-transform duration-500">
                   {p.icon}
                 </div>
-                <h3 className="font-serif text-3xl text-foreground mb-6 uppercase tracking-tighter italic">
-                  {p.name}
-                </h3>
-                <p className="text-muted-foreground text-sm font-light mb-10 leading-relaxed italic border-l border-white/5 pl-6 group-hover:text-foreground">
-                  {p.bonus}
-                </p>
+                <span className="font-mono text-[9px] text-white/20 uppercase tracking-widest">
+                  [ {p.code} ]
+                </span>
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* ЭКОНОМИКА И INNKEEPER (Контрастные блоки) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-border border border-border shadow-2xl overflow-hidden">
-          {/* Экономика */}
-          <div className="bg-background p-12 md:p-20 relative overflow-hidden group">
-            <div className="absolute -bottom-10 -right-10 opacity-[0.02] group-hover:opacity-[0.05] transition-opacity">
-              <Store className="w-64 h-64" />
+              <h3 className="font-serif text-2xl text-white mb-4 uppercase italic font-black tracking-tight group-hover:text-primary transition-colors">
+                {p.name}
+              </h3>
+
+              <p className="text-white/40 text-[11px] leading-relaxed mb-8 h-20 overflow-hidden font-bold uppercase tracking-wider italic">
+                {p.bonus}
+              </p>
+
+              <div className="pt-4 border-t border-white/5 flex flex-col gap-1">
+                <span className="text-[8px] font-black text-primary/60 uppercase tracking-widest">
+                  Mastery_Stats:
+                </span>
+                <span className="text-[10px] font-mono text-white/60">
+                  {p.stats}
+                </span>
+              </div>
             </div>
+          ))}
+        </div>
 
+        {/* BOTTOM BLOCKS (Split) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/10 border border-white/10">
+          {/* Economy */}
+          <div className="bg-[#050505] p-12 md:p-16 relative">
             <div className="flex items-center gap-6 mb-12">
-              <div className="p-4 border border-primary/20 bg-primary/5">
-                <Store className="w-6 h-6 text-primary" />
-              </div>
-              <h2 className="font-serif text-4xl text-foreground uppercase tracking-tighter italic">
+              <div className="h-12 w-1 bg-primary" />
+              <h2 className="font-serif text-4xl text-white uppercase italic font-black tracking-tighter">
                 Экономика
               </h2>
             </div>
-
-            <p className="text-muted-foreground font-light text-lg mb-12 leading-relaxed italic border-l-2 border-primary/20 pl-8">
-              Централизованная система обмена.
-              <span className="text-white font-bold not-italic">
-                {" "}
-                Admin Shop{" "}
-              </span>
-              конвертирует ваш физический труд в редкие артефакты и технологии.
-            </p>
-
-            <div className="space-y-px bg-white/5 border border-white/5 shadow-inner">
+            <div className="space-y-3">
               {[
-                {
-                  name: "Copper Coins",
-                  desc: "Базовые транзакции",
-                  val: "Tier I",
-                },
-                { name: "Iron Coins", desc: "Средний рынок", val: "Tier II" },
-                {
-                  name: "Gold Coins",
-                  desc: "Высшая ценность",
-                  val: "Tier III",
-                },
-              ].map((coin) => (
+                "Copper Coins / Tier I",
+                "Iron Coins / Tier II",
+                "Gold Coins / Tier III",
+              ].map((coin, i) => (
                 <div
-                  key={coin.name}
-                  className="flex items-center justify-between p-6 bg-[#0c0c0e] hover:bg-white/[0.03] transition-all"
+                  key={i}
+                  className="flex justify-between p-5 bg-white/[0.02] border border-white/5 hover:border-primary/30 transition-all group"
                 >
-                  <div className="flex items-center gap-5">
-                    <Coins className="w-4 h-4 text-primary" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground">
-                      {coin.name}
+                  <div className="flex items-center gap-4">
+                    <Coins className="w-4 h-4 text-primary opacity-50 group-hover:opacity-100" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em]">
+                      {coin.split(" / ")[0]}
                     </span>
                   </div>
-                  <span className="text-[8px] text-muted-foreground font-black uppercase tracking-widest bg-white/5 px-3 py-1">
-                    {coin.desc}
+                  <span className="text-[9px] font-mono text-white/20 uppercase">
+                    {coin.split(" / ")[1]}
                   </span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Innkeeper (Тёмная карточка) */}
-          <div className="bg-[#0c0c0e] p-12 md:p-20 relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_100%_100%,_rgba(153,27,27,0.05)_0%,_transparent_50%)]" />
-
-            <div className="flex items-center gap-6 mb-12 relative z-10">
-              <div className="p-4 bg-primary text-white">
-                <Home className="w-6 h-6" />
+          {/* Innkeeper */}
+          <div className="bg-[#050505] p-12 md:p-16 flex flex-col justify-between border-l border-white/10">
+            <div>
+              <div className="flex items-center gap-6 mb-12">
+                <div className="h-12 w-1 bg-primary" />
+                <h2 className="font-serif text-4xl text-white uppercase italic font-black tracking-tighter">
+                  Innkeeper
+                </h2>
               </div>
-              <h2 className="font-serif text-4xl text-foreground uppercase tracking-tighter italic">
-                Innkeeper
-              </h2>
-            </div>
-
-            <div className="relative z-10">
-              <p className="text-slate-400 font-light text-lg mb-12 leading-relaxed italic">
-                Убежище для странствующих лордов. Безопасная зона хранения
-                эссенций до момента возведения великого замка.
-              </p>
-
-              <div className="space-y-6 mb-14">
+              <ul className="space-y-4 mb-12">
                 {[
                   "Аренда защищенных хранилищ",
-                  "Иммунитет к рейдам в жилой зоне",
-                  "Локальный узел возрождения душ",
+                  "Безопасная зона (Anti-Raid)",
+                  "Узел возрождения душ",
                 ].map((item) => (
-                  <div
+                  <li
                     key={item}
-                    className="flex items-center gap-5 text-[11px] text-muted-foreground uppercase tracking-[0.2em] font-bold"
+                    className="flex items-center gap-4 text-[10px] font-black text-white/40 uppercase tracking-[0.2em]"
                   >
-                    <div className="w-2 h-2 bg-primary transition-all group-hover:rotate-45" />
+                    <div className="w-1.5 h-1.5 bg-primary" />
                     {item}
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
+            </div>
 
-              <div className="flex flex-col p-6 bg-background border border-white/5 shadow-2xl">
-                <span className="text-[9px] uppercase tracking-[0.4em] text-muted-foreground mb-3 font-black opacity-30">
-                  Access Protocol
+            <div className="p-6 border border-primary bg-primary/5 flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-[9px] font-black text-primary uppercase tracking-[0.4em] mb-1">
+                  Terminal_Cmd
                 </span>
-                <code className="text-primary font-black uppercase tracking-widest text-lg">
+                <code className="text-2xl font-mono text-white font-bold tracking-tighter">
                   .inn join
                 </code>
+              </div>
+              <div className="h-10 w-px bg-primary/30" />
+              <div className="text-[10px] text-white/40 font-black uppercase tracking-widest italic">
+                Auth_Req
               </div>
             </div>
           </div>
         </div>
 
-        {/* ПРЕДУПРЕЖДЕНИЕ (System Alert) */}
-        <div className="mt-16 p-8 border border-red-500/20 bg-red-500/5 flex items-start gap-8 relative overflow-hidden group">
-          <div className="absolute top-0 left-0 w-1 h-full bg-red-500 animate-pulse" />
-          <Info className="w-6 h-6 text-red-500 shrink-0 mt-1 group-hover:scale-110 transition-transform" />
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-red-500 block mb-2">
-              System Alert: Economic Fluctuations
-            </span>
-            <p className="text-[11px] text-muted-foreground uppercase leading-[2] tracking-widest font-bold">
-              Внимание: Экономика Вардорана динамична. Смена профессии
-              аннулирует текущий стаж и облагается процентным налогом.
-              Рекомендуется планирование перед выполнением директивы.
+        {/* SYSTEM ALERT (Как в Hero стиле) */}
+        <div className="mt-12 p-8 border border-primary/20 bg-primary/5 relative">
+          <div className="absolute left-0 top-0 h-full w-1 bg-primary" />
+          <div className="flex items-center gap-6">
+            <Info className="w-6 h-6 text-primary" />
+            <p className="text-[11px] font-black text-white/60 uppercase tracking-[0.2em] leading-relaxed">
+              <span className="text-primary">System_Warning:</span> Смена
+              специализации уровня [100] требует подтверждения совета и влечет
+              за собой полный сброс текущего прогресса.
             </p>
           </div>
         </div>
       </div>
 
       <style jsx global>{`
-        @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;900&display=swap");
-
-        .font-serif {
-          font-family: "Cinzel", serif;
-        }
-
-        /* Полный запрет на скругления */
         * {
           border-radius: 0 !important;
         }
-
-        ::-webkit-scrollbar {
-          width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #0a0a0c;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #1a1a1e;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #dc2626;
+        .font-serif {
+          font-family: "Cinzel", serif;
         }
       `}</style>
-    </div>
+    </main>
   );
 }

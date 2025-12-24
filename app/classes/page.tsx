@@ -127,21 +127,37 @@ export default function ClassesPage() {
       </div>
 
       <div className="container relative z-10 mx-auto px-6 pt-40 pb-20">
-        {/* ЗАГОЛОВОК */}
-        <div className="flex flex-col items-start mb-24 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
-          <span className="text-primary font-black tracking-[0.6em] uppercase text-[10px] block mb-4">
-            Кодекс Вардорана // Классы
-          </span>
-          <h1 className="font-serif text-6xl md:text-8xl text-foreground mb-8 italic uppercase tracking-tighter">
-            ПУТЬ <span className="text-primary not-italic">СИЛЫ</span>
-          </h1>
-          <p className="max-w-2xl text-muted-foreground font-light text-xl italic leading-relaxed">
-            Ваш класс — это фундамент могущества. Каждая ветка открывает доступ
-            к уникальным{" "}
-            <span className="text-white font-bold">Протоколам Боя</span>.
-          </p>
-        </div>
+        {/* HEADER SECTION - BATTLE PROTOCOLS */}
+        <div className="max-w-5xl mb-32 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
+              Кодекс Вардорана // Классы
+            </span>
+            <div className="h-px w-24 bg-primary/20" />
+          </div>
 
+          <h1 className="font-serif text-[7vw] md:text-[90px] text-white font-black tracking-tighter leading-[0.85] uppercase italic mb-10">
+            ПУТЬ{" "}
+            <span className="not-italic text-primary drop-shadow-[0_0_40px_rgba(220,38,38,0.6)]">
+              СИЛЫ
+            </span>
+          </h1>
+
+          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5">
+            {/* Декоративные технические уголки */}
+            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
+
+            <p className="max-w-xl text-white/50 text-base md:text-lg tracking-widest font-light uppercase italic leading-relaxed">
+              Ваш класс — это фундамент могущества. <br />
+              Каждая ветка открывает доступ к уникальным <br />
+              <span className="text-white font-bold not-italic underline decoration-primary decoration-2 underline-offset-8">
+                Протоколам Боя
+              </span>
+              .
+            </p>
+          </div>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-white/5 bg-white/[0.01] shadow-[40px_40px_0px_rgba(0,0,0,0.3)]">
           {/* ЛЕВАЯ ПАНЕЛЬ: ВЫБОР */}
           <div className="lg:col-span-4 border-r border-white/5 bg-black/20">
