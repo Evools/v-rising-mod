@@ -2,9 +2,9 @@
 
 import { Box, ChevronRight, Rocket, ShieldAlert, Zap } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSyncExternalStore } from "react";
 
-// Безопасная проверка клиента для Next.js (устраняет ошибку cascading renders)
 const subscribe = () => () => {};
 const useIsClient = () =>
   useSyncExternalStore(
@@ -23,7 +23,7 @@ const guides = [
     steps: [
       "Введите в чате .misc starterkit для получения базовых вещей.",
       "Выберите свой путь командой .class s [1-6].",
-      "Найдите NPC Профессий для получения первой специализации.",
+      "Найдите NPC Профессий для специализации.",
     ],
   },
   {
@@ -33,9 +33,9 @@ const guides = [
     description:
       "Как настроить автоматизацию замка, чтобы ресурсы сами летели в сундуки.",
     steps: [
-      "Используйте .stash, находясь в замке, для мгновенной выгрузки ресурсов.",
+      "Используйте .stash для мгновенной выгрузки ресурсов.",
       "Настройте авто-кормление жаровен командой .l us.",
-      "Используйте .fi [название], если потеряли предмет в горе сундуков.",
+      "Используйте .fi [название] для поиска предметов.",
     ],
   },
   {
@@ -46,8 +46,8 @@ const guides = [
       "Подробный разбор того, что вы теряете и что приобретаете при перерождении.",
     steps: [
       "По достижении 100 уровня используйте .prestige.",
-      "Ваш уровень сбросится, но вы получите постоянные бонусы к характеристикам.",
-      "На 5 и 10 уровне престижа открываются ультимативные способности класса.",
+      "Ваш уровень сбросится, но вы получите бонусы.",
+      "На 5 и 10 уровне открываются ультимейты.",
     ],
   },
   {
@@ -56,9 +56,9 @@ const guides = [
     icon: <ShieldAlert className="w-6 h-6" />,
     description: "Как выжить в Brutal+ мире, пока у вас нет своего замка.",
     steps: [
-      "Арендуйте комнату в Гостинице (.inn join) — это ваша зона безопасности.",
-      "Складывайте ценные вещи в сундуки гостиницы, они защищены от воровства.",
-      "Прокачивайте мастерство оружия (.wm s) на слабых мобах, чтобы увеличить урон.",
+      "Арендуйте комнату в Гостинице (.inn join).",
+      "Складывайте ценные вещи в защищенные сундуки.",
+      "Прокачивайте мастерство оружия (.wm s).",
     ],
   },
 ];
@@ -66,66 +66,91 @@ const guides = [
 export default function GuidesPage() {
   const isClient = useIsClient();
 
-  // Предотвращение мерцания гидратации
-  if (!isClient) return <div className="min-h-screen bg-background" />;
+  if (!isClient) return <div className="min-h-screen bg-[#050505]" />;
 
   return (
-    <div className="relative min-h-screen bg-background pt-32 pb-20 transition-colors duration-500 font-sans selection:bg-primary/30">
-      {/* ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ ФОНА */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-blue-900/5 blur-[100px]" />
-        <div className="absolute inset-0 bg-grid-white/[0.01] bg-[size:40px_40px]" />
+    <div className="relative min-h-screen bg-[#050505] selection:bg-primary/30 font-sans">
+      {/* STATIC HEADER BACKGROUND */}
+      <div className="absolute top-0 left-0 w-full h-[60vh] z-0 overflow-hidden">
+        <Image
+          src="/bg-1.jpg" // Статичное изображение
+          alt="Guides Background"
+          fill
+          className="object-cover object-center grayscale opacity-40"
+          priority
+        />
+
+        {/* HUD OVERLAY */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none" />
+
+        {/* FADE TO BLACK */}
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505]" />
       </div>
 
-      <div className="container relative z-10 mx-auto px-4">
-        {/* ЗАГОЛОВОК (Strict Style) */}
-        <div className="max-w-3xl mb-20 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-8 duration-1000">
-          <span className="text-primary font-bold tracking-[0.5em] uppercase text-[10px] block mb-4">
-            Archive of Wisdom
-          </span>
-          <h1 className="font-serif text-6xl md:text-7xl text-foreground mb-6 uppercase tracking-tighter italic">
-            РУКОВОДСТВА <span className="not-italic text-primary">СИСТЕМЫ</span>
+      <div className="container relative z-10 mx-auto px-6 pt-40 pb-32">
+        {/* HEADER */}
+        <div className="max-w-5xl mb-32 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
+              Archive of Wisdom // Protocols
+            </span>
+            <div className="h-px w-24 bg-primary/20" />
+          </div>
+
+          <h1 className="font-serif text-[7vw] md:text-[90px] text-white font-black tracking-tighter leading-[0.85] uppercase italic mb-10">
+            РУКОВОДСТВА <br />
+            <span className="not-italic text-primary drop-shadow-[0_0_40px_rgba(220,38,38,0.6)]">
+              СИСТЕМЫ
+            </span>
           </h1>
-          <p className="text-muted-foreground font-light text-xl leading-relaxed italic max-w-2xl">
-            Центральный узел знаний Blood and Wine. От настройки автоматических
-            складов до освоения темных искусств престижа.
-          </p>
+
+          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5 backdrop-blur-sm">
+            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
+            <p className="max-w-xl text-white/50 text-base md:text-lg tracking-widest font-light uppercase italic leading-relaxed">
+              Центральный узел знаний Blood and Wine. <br />
+              Инструкции по выживанию в мире Brutal+.
+            </p>
+          </div>
         </div>
 
-        {/* СЕТКА ГАЙДОВ (Sharp Border Grid) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border border border-border shadow-[30px_30px_0px_rgba(0,0,0,0.2)]">
-          {guides.map((guide) => (
+        {/* GUIDES GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/5 border border-white/5">
+          {guides.map((guide, index) => (
             <div
               key={guide.title}
-              className="bg-background p-10 md:p-16 hover:bg-primary/[0.02] transition-all group relative overflow-hidden"
+              className="group relative bg-[#080808]/60 p-8 md:p-14 transition-all duration-300 hover:bg-white/[0.05] overflow-hidden"
             >
-              {/* Декоративный уголок при наведении */}
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[40px] border-l-[40px] border-t-primary/10 border-l-transparent transition-all group-hover:border-t-primary/30" />
+              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary opacity-30 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary opacity-30 group-hover:opacity-100 transition-opacity" />
 
-              <div className="flex items-start justify-between mb-10">
-                <div className="p-4 bg-primary/5 text-primary border border-primary/20 transition-colors group-hover:bg-primary group-hover:text-white">
+              <div className="flex items-start justify-between gap-6 mb-12 relative z-10">
+                <div className="w-14 h-14 flex items-center justify-center bg-primary/10 border border-primary/20 text-primary transition-all duration-500 group-hover:bg-primary group-hover:text-white">
                   {guide.icon}
                 </div>
-                <div className="text-[10px] font-black tracking-[0.3em] text-muted-foreground/20 group-hover:text-primary transition-colors uppercase">
-                  Log_{guide.slug.replace("-", "_")}
+                <div className="text-right flex flex-col items-end">
+                  <span className="text-[8px] font-mono text-white/20 uppercase tracking-[0.2em] mb-1">
+                    System_Access_ID: 00{index + 1}
+                  </span>
+                  <span className="text-[10px] font-black text-primary uppercase tracking-widest group-hover:text-white transition-colors">
+                    Log_{guide.slug.replace("-", "_")}
+                  </span>
                 </div>
               </div>
 
-              <h2 className="font-serif text-3xl text-foreground mb-6 uppercase italic tracking-tight group-hover:text-primary transition-colors">
+              <h2 className="font-serif text-3xl md:text-4xl text-white mb-6 uppercase italic tracking-tighter transition-colors group-hover:text-primary">
                 {guide.title}
               </h2>
-              <p className="text-muted-foreground text-sm font-light mb-10 leading-relaxed italic border-l border-white/5 pl-6">
+
+              <p className="text-white/40 text-sm font-light mb-10 leading-relaxed italic border-l border-primary/40 pl-6 group-hover:text-white/60 transition-colors">
                 {guide.description}
               </p>
 
-              <div className="space-y-6 mb-12">
+              <div className="space-y-4 mb-14 relative z-10">
                 {guide.steps.map((step, i) => (
-                  <div key={i} className="flex items-start gap-5 group/step">
-                    <span className="text-[9px] font-black text-primary bg-primary/10 w-6 h-6 flex items-center justify-center border border-primary/20">
-                      {i + 1}
-                    </span>
-                    <p className="text-xs text-foreground/70 font-medium leading-relaxed uppercase tracking-wider group-hover/step:text-foreground transition-colors">
+                  <div key={i} className="flex items-center gap-4">
+                    <div className="w-1 h-1 bg-primary transition-all group-hover:scale-150" />
+                    <p className="text-[10px] text-white/60 font-black uppercase tracking-wider group-hover:text-white/90 transition-colors">
                       {step}
                     </p>
                   </div>
@@ -134,28 +159,25 @@ export default function GuidesPage() {
 
               <Link
                 href={`/guides/${guide.slug}`}
-                className="inline-flex items-center gap-4 text-[11px] uppercase tracking-[0.3em] font-black text-primary hover:text-foreground transition-all group/link"
+                className="flex items-center justify-between py-5 border-t border-white/5 text-[11px] font-black uppercase tracking-[0.4em] text-primary hover:text-white transition-all group/link"
               >
-                РАСКРЫТЬ ДАННЫЕ
-                <ChevronRight className="w-4 h-4 transition-transform group-hover/link:translate-x-2" />
+                <span>Установить соединение</span>
+                <div className="flex items-center bg-primary/10 px-2 py-1 group-hover/link:bg-primary transition-colors">
+                  <ChevronRight className="w-4 h-4 translate-x-0 group-hover/link:translate-x-1 transition-transform group-hover/link:text-white" />
+                </div>
               </Link>
             </div>
           ))}
         </div>
 
-        {/* СЕКЦИЯ ПОМОЩИ (Brutalist Banner) */}
-        <div className="mt-24 p-1 bg-gradient-to-r from-primary/50 via-border to-primary/50">
-          <div className="bg-background p-12 md:p-20 text-center relative overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] pointer-events-none" />
-
-            <h3 className="font-serif text-3xl text-foreground mb-6 uppercase italic tracking-widest">
+        {/* BANNER */}
+        <div className="mt-40 border border-white/10 relative overflow-hidden group">
+          <div className="bg-black/40 p-12 md:p-24 text-center relative z-10 backdrop-blur-sm">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-16 bg-primary" />
+            <h3 className="font-serif text-4xl md:text-6xl text-white mb-8 uppercase italic tracking-tighter">
               ТРЕБУЕТСЯ <span className="text-primary">ПОДДЕРЖКА</span>?
             </h3>
-            <p className="text-muted-foreground text-sm font-light mb-10 max-w-xl mx-auto uppercase tracking-widest leading-loose">
-              Если архивы не дали ответа, обратитесь к совету старейшин в нашем
-              терминале Discord.
-            </p>
-            <button className="px-12 py-5 bg-primary text-white text-[11px] uppercase tracking-[0.4em] font-black hover:bg-white hover:text-black transition-all shadow-[10px_10px_0px_rgba(220,38,38,0.2)] active:translate-x-1 active:translate-y-1 active:shadow-none">
+            <button className="h-20 px-16 bg-primary text-white text-[11px] font-black uppercase tracking-[0.4em] hover:bg-white hover:text-black transition-all duration-300 border border-primary active:translate-y-1 shadow-[10px_10px_0px_rgba(220,38,38,0.2)]">
               ВСТУПИТЬ В СООБЩЕСТВО
             </button>
           </div>
@@ -163,28 +185,11 @@ export default function GuidesPage() {
       </div>
 
       <style jsx global>{`
-        @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;900&display=swap");
-
         .font-serif {
           font-family: "Cinzel", serif;
         }
-
-        /* Полный отказ от скруглений */
         * {
           border-radius: 0 !important;
-        }
-
-        ::-webkit-scrollbar {
-          width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #0a0a0c;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #1a1a1e;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #dc2626;
         }
       `}</style>
     </div>

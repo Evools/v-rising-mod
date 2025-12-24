@@ -19,22 +19,22 @@ const knowledgeLinks = [
   {
     name: "Боевые Классы",
     href: "/classes",
-    icon: <Sword className="w-3 h-3" />,
+    icon: <Sword className="w-4 h-4" />,
   },
   {
     name: "Экономика Мира",
     href: "/world",
-    icon: <Globe className="w-3 h-3" />,
+    icon: <Globe className="w-4 h-4" />,
   },
   {
     name: "Фамильяры",
     href: "/familiars",
-    icon: <Ghost className="w-3 h-3" />,
+    icon: <Ghost className="w-4 h-4" />,
   },
   {
     name: "Прогрессия",
     href: "/progression",
-    icon: <Zap className="w-3 h-3" />,
+    icon: <Zap className="w-4 h-4" />,
   },
 ];
 
@@ -63,15 +63,15 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-[100] transition-all duration-500",
         isScrolled
-          ? "bg-background border-b border-primary/40 py-4 shadow-2xl"
+          ? "bg-[#050505] border-b border-primary py-4 shadow-2xl"
           : "bg-transparent border-b border-white/10 py-8"
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        {/* НОРМАЛЬНЫЙ ЛОГОТИП */}
+        {/* ЛОГОТИП */}
         <Link href="/" className="flex items-center gap-3 outline-none group">
           <div className="flex flex-col border-l-2 border-primary pl-3">
-            <span className="text-xl font-black tracking-[0.2em] leading-none text-white uppercase">
+            <span className="text-xl font-black tracking-[0.2em] leading-none text-white uppercase italic">
               Court
             </span>
             <span className="text-[10px] font-black tracking-[0.55em] leading-none text-primary uppercase mt-1">
@@ -81,49 +81,76 @@ export default function Navbar() {
         </Link>
 
         {/* ДЕСКТОПНАЯ НАВИГАЦИЯ */}
-        <div className="hidden lg:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2 h-full">
           <Link
             href="/"
-            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-primary transition-all relative"
+            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-white transition-all"
           >
             Главная
           </Link>
 
+          {/* ВЫПАДАЮЩИЙ СПИСОК (БАЗА ЗНАНИЙ) */}
           <div
-            className="relative"
+            className="relative flex items-center h-full"
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            <button className="px-6 py-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-primary transition-all outline-none">
+            <button
+              className={cn(
+                "px-6 py-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-black transition-all outline-none",
+                isDropdownOpen
+                  ? "text-primary"
+                  : "text-white/50 hover:text-white"
+              )}
+            >
               База Знаний
               <ChevronDown
                 className={cn(
-                  "w-3 h-3 transition-transform duration-300",
-                  isDropdownOpen && "rotate-180 text-primary"
+                  "w-3.5 h-3.5 transition-transform duration-300",
+                  isDropdownOpen && "rotate-180"
                 )}
               />
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute top-full left-0 pt-6 w-72 animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className="bg-[#0c0c0e] border border-white/10 p-1 shadow-2xl">
-                  {knowledgeLinks.map((link) => (
+              <div className="absolute top-full left-0 pt-4 w-80 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="bg-[#080808] border border-white/10 p-1 shadow-[0_20px_50px_rgba(0,0,0,0.9)] relative">
+                  {/* HUD Уголки */}
+                  <div className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-primary" />
+                  <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-primary" />
+
+                  {knowledgeLinks.map((link, index) => (
                     <Link
                       key={link.name}
                       href={link.href}
-                      className="flex items-center justify-between p-4 hover:bg-primary hover:text-white group transition-all"
+                      className="group flex items-center justify-between p-4 transition-all duration-200 hover:bg-white"
                     >
                       <div className="flex items-center gap-4">
-                        <span className="group-hover:text-white text-primary transition-colors">
+                        <span className="text-primary group-hover:text-black transition-colors duration-200">
                           {link.icon}
                         </span>
-                        <span className="text-[9px] uppercase tracking-widest font-black">
-                          {link.name}
-                        </span>
+                        <div className="flex flex-col text-left">
+                          <span className="text-[10px] uppercase tracking-[0.25em] font-black text-white/80 group-hover:text-black transition-colors">
+                            {link.name}
+                          </span>
+                          <span className="text-[7px] font-mono text-white/20 group-hover:text-black/50 uppercase tracking-tighter">
+                            Registry_ID: 00{index + 1}
+                          </span>
+                        </div>
                       </div>
-                      <ChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-all" />
+                      <ChevronRight className="w-3 h-3 text-black opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
                     </Link>
                   ))}
+
+                  {/* Нижняя системная строка */}
+                  <div className="mt-1 py-1.5 px-4 border-t border-white/5 bg-white/[0.02]">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[6px] font-mono text-white/10 uppercase tracking-[0.4em]">
+                        Access_Protocol: Verified
+                      </span>
+                      <div className="w-1 h-1 bg-primary/30 animate-pulse" />
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -131,19 +158,19 @@ export default function Navbar() {
 
           <Link
             href="/guides"
-            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-primary transition-all"
+            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-white transition-all"
           >
             Гайды
           </Link>
           <Link
             href="/commands"
-            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-primary transition-all"
+            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-white transition-all"
           >
             Команды
           </Link>
         </div>
 
-        {/* ПРАВАЯ ЧАСТЬ */}
+        {/* ПРАВАЯ ЧАСТЬ (ДИСКОРД) */}
         <div className="hidden lg:flex items-center gap-10">
           {isClient && (
             <div className="flex items-center gap-8">
@@ -180,7 +207,7 @@ export default function Navbar() {
       {/* МОБИЛЬНОЕ МЕНЮ */}
       {isMobileMenuOpen && (
         <div className="absolute top-full left-0 right-0 bg-[#0c0c0e] border-b border-primary animate-in slide-in-from-top-4 lg:hidden">
-          <div className="flex flex-col p-8 gap-8">
+          <div className="flex flex-col p-8 gap-6">
             <Link
               href="/"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -188,7 +215,6 @@ export default function Navbar() {
             >
               Главный Терминал
             </Link>
-
             <div className="grid grid-cols-1 gap-2">
               {knowledgeLinks.map((link) => (
                 <Link
@@ -198,14 +224,13 @@ export default function Navbar() {
                   className="flex items-center justify-between p-5 bg-white/5 text-[9px] font-black uppercase tracking-widest"
                 >
                   <div className="flex items-center gap-4">
-                    {link.icon}
+                    <span className="text-primary">{link.icon}</span>
                     {link.name}
                   </div>
                   <ChevronRight className="w-4 h-4 text-primary" />
                 </Link>
               ))}
             </div>
-
             <Button className="w-full h-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.5em]">
               Discord Server
             </Button>
