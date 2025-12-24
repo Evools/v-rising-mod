@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Blood and Wine | V Rising Mod",
+  title: "Blood & Conquest | V Rising Mod",
   description: "База знаний и команд сервера",
 };
 
