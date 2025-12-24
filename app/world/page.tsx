@@ -1,18 +1,22 @@
 "use client";
 
 import {
+  Axe,
   Coins,
+  Fish,
+  FlaskConical,
+  Gem,
+  Hammer,
   Home,
   Info,
   Pickaxe,
+  Shirt,
   Shovel,
   Store,
-  TreePine,
 } from "lucide-react";
 import Image from "next/image";
 import { useSyncExternalStore } from "react";
 
-// Безопасная проверка клиента для предотвращения ошибок гидратации
 const subscribe = () => () => {};
 const useIsClient = () =>
   useSyncExternalStore(
@@ -23,22 +27,51 @@ const useIsClient = () =>
 
 const professions = [
   {
-    name: "Miner",
+    name: "Шахтерство",
     icon: <Pickaxe className="w-6 h-6" />,
-    bonus: "+ к скорости добычи руды и шанс на доп. дроп",
-    cmd: ".prof join miner",
+    bonus:
+      "Повышает кол-во лута собираемого с камней, руды и так же повышает шанс выпадения самоцветов и глины с камней",
   },
   {
-    name: "Lumberjack",
-    icon: <TreePine className="w-6 h-6" />,
-    bonus: "+ к урону по деревьям и количество ценной древесины",
-    cmd: ".prof join lumberjack",
+    name: "Дровосек",
+    icon: <Axe className="w-6 h-6" />,
+    bonus:
+      "Повышает кол-во лута собираемого с Деревьев и так же повышает шанс на выпадение саженцев",
   },
   {
-    name: "Gatherer",
+    name: "Травничество",
     icon: <Shovel className="w-6 h-6" />,
-    bonus: "+ к сбору растений и шанс найти редкие семена",
-    cmd: ".prof join gatherer",
+    bonus:
+      "Повышает кол-во лута которое собирается с грядок и травы а так же повышает шанс выпадения семян",
+  },
+  {
+    name: "Рыбалка",
+    icon: <Fish className="w-6 h-6" />,
+    bonus: "Дает (+1) рыбу при рыбалке за каждые [20] ур прокачки",
+  },
+  {
+    name: "Алхимия",
+    icon: <FlaskConical className="w-6 h-6" />,
+    bonus:
+      "Повышает время действия зелий до (2 часов) а так же усиливает эффект зелий Повышающих  Силу Магии и Физ.Силу",
+  },
+  {
+    name: "Кузнечное дело",
+    icon: <Hammer className="w-6 h-6" />,
+    bonus:
+      "повышает прочность Создаваемого оружия (лег.оружии это [7600] прочности) и физ.урон когда вы держите оружие в руках",
+  },
+  {
+    name: "Ювелирное дело",
+    icon: <Gem className="w-6 h-6" />,
+    bonus:
+      "Повышает прочность Создаваемых Амулетов (до [2895] прочности) и повышает силу магии одеваемых амулетов",
+  },
+  {
+    name: "Портняжное Дело",
+    icon: <Shirt className="w-6 h-6" />,
+    bonus:
+      "Повышает прочность Создаваемой Брони (До [3273] прочности) и повышает максимальное ХП",
   },
 ];
 
@@ -90,7 +123,7 @@ export default function WorldPage() {
             <div className="flex-1 h-px bg-white/5" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 bg-border border border-border shadow-[20px_20px_0px_rgba(0,0,0,0.3)]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-border shadow-[20px_20px_0px_rgba(0,0,0,0.3)]">
             {professions.map((p) => (
               <div
                 key={p.name}
@@ -108,14 +141,6 @@ export default function WorldPage() {
                 <p className="text-muted-foreground text-sm font-light mb-10 leading-relaxed italic border-l border-white/5 pl-6 group-hover:text-foreground">
                   {p.bonus}
                 </p>
-                <div className="pt-8 border-t border-white/5 bg-white/[0.01] -mx-12 px-12 pb-2">
-                  <span className="text-[8px] uppercase tracking-[0.4em] text-muted-foreground block mb-3 font-black opacity-40 group-hover:opacity-100 group-hover:text-primary transition-all">
-                    Directive Protocol
-                  </span>
-                  <code className="text-foreground text-base font-bold tracking-tight uppercase group-hover:text-white transition-colors">
-                    {p.cmd}
-                  </code>
-                </div>
               </div>
             ))}
           </div>
