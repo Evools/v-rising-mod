@@ -10,9 +10,9 @@ function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-20 mb-32">
           <div className="lg:col-span-2">
             <div className="font-serif text-4xl tracking-tighter text-foreground mb-8">
-              <span className="font-black italic text-primary">BLOOD</span>
-              <span className="font-light mx-1">/</span>
-              <span className="font-black uppercase">WINE</span>
+              <span className="font-black italic text-primary">Blood</span>
+              <span className="font-light mx-1">&</span>
+              <span className="font-black uppercase">Conquest</span>
             </div>
             <p className="text-muted-foreground text-sm font-light leading-relaxed max-w-sm mb-10 italic border-l border-white/10 pl-6">
               Премиальный V Rising проект. Мы создаем экосистему, где каждый
