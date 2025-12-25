@@ -7,12 +7,10 @@ import {
   FlaskConical,
   Gem,
   Hammer,
-  Home,
   Info,
   Pickaxe,
   Shirt,
   Shovel,
-  Store,
 } from "lucide-react";
 import Image from "next/image";
 import { useSyncExternalStore } from "react";
@@ -95,23 +93,24 @@ export default function WorldPage() {
   if (!isClient) return <div className="min-h-screen bg-[#050505]" />;
 
   return (
-    <main className="relative min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden selection:bg-primary">
-      {/* BACKGROUND & HUD (Тот же стиль, что в Hero) */}
-      <div className="absolute inset-0 z-0">
+    <main className="relative min-h-screen bg-[#050505] text-white font-sans selection:bg-primary/30">
+      {/* --- STATIC BACKGROUND (Как в командах) --- */}
+      <div className="absolute top-0 left-0 w-full h-[60vh] z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/bg-1.jpg"
-          alt="World Background"
+          src="/bg-2.jpg"
+          alt="Terminal Background"
           fill
-          className="object-cover object-center opacity-10 grayscale"
+          className="object-cover object-center grayscale opacity-30"
+          priority
         />
-        {/* HUD Overlay */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#050505_100%)]" />
-        </div>
+        {/* CRT Scanline Effect */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none" />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505]" />
       </div>
+      {/* -------------------------------------- */}
 
-      {/* SIDE DATA (Вертикальный декор из Hero) */}
+      {/* SIDE DATA DECOR */}
       <div className="hidden xl:block absolute left-8 top-1/2 -translate-y-1/2 z-40 [writing-mode:vertical-lr] rotate-180 opacity-20">
         <p className="text-[9px] font-black tracking-[1em] uppercase">
           Economy_Module_v2.04
@@ -123,12 +122,12 @@ export default function WorldPage() {
         </p>
       </div>
 
-      <div className="container relative z-20 mx-auto px-4 pt-44 pb-32">
+      <div className="container relative z-10 mx-auto px-6 pt-40 pb-32">
         {/* HEADER SECTION */}
         <div className="max-w-5xl mb-32 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
-              Infrastructure Hub
+              Infrastructure Hub // Economy
             </span>
             <div className="h-px w-24 bg-primary/20" />
           </div>
@@ -141,8 +140,7 @@ export default function WorldPage() {
             ЭКОНОМИКА
           </h1>
 
-          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5">
-            {/* Декоративные уголки для рамки цитаты */}
+          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5 backdrop-blur-sm">
             <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
             <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
 
@@ -154,12 +152,12 @@ export default function WorldPage() {
           </div>
         </div>
 
-        {/* PROFESSIONS GRID (Brutalist Style) */}
+        {/* PROFESSIONS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 mb-20 shadow-2xl">
           {professions.map((p) => (
             <div
               key={p.code}
-              className="group relative p-8 bg-[#050505] hover:bg-white/[0.02] transition-all duration-300"
+              className="group relative p-8 bg-[#080808]/80 hover:bg-white/[0.02] transition-all duration-300 backdrop-blur-sm"
             >
               <div className="flex justify-between items-start mb-12">
                 <div className="text-primary group-hover:scale-110 transition-transform duration-500">
@@ -190,10 +188,10 @@ export default function WorldPage() {
           ))}
         </div>
 
-        {/* BOTTOM BLOCKS (Split) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/10 border border-white/10">
+        {/* BOTTOM BLOCKS */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/10 border border-white/10 shadow-2xl">
           {/* Economy */}
-          <div className="bg-[#050505] p-12 md:p-16 relative">
+          <div className="bg-[#080808]/80 backdrop-blur-sm p-12 md:p-16 relative hover:bg-white/[0.01] transition-colors">
             <div className="flex items-center gap-6 mb-12">
               <div className="h-12 w-1 bg-primary" />
               <h2 className="font-serif text-4xl text-white uppercase italic font-black tracking-tighter">
@@ -225,7 +223,7 @@ export default function WorldPage() {
           </div>
 
           {/* Innkeeper */}
-          <div className="bg-[#050505] p-12 md:p-16 flex flex-col justify-between border-l border-white/10">
+          <div className="bg-[#080808]/80 backdrop-blur-sm p-12 md:p-16 flex flex-col justify-between border-l border-white/10 hover:bg-white/[0.01] transition-colors">
             <div>
               <div className="flex items-center gap-6 mb-12">
                 <div className="h-12 w-1 bg-primary" />
@@ -267,8 +265,8 @@ export default function WorldPage() {
           </div>
         </div>
 
-        {/* SYSTEM ALERT (Как в Hero стиле) */}
-        <div className="mt-12 p-8 border border-primary/20 bg-primary/5 relative">
+        {/* SYSTEM ALERT */}
+        <div className="mt-12 p-8 border border-primary/20 bg-[#080808]/60 backdrop-blur-sm relative">
           <div className="absolute left-0 top-0 h-full w-1 bg-primary" />
           <div className="flex items-center gap-6">
             <Info className="w-6 h-6 text-primary" />

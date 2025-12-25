@@ -13,7 +13,6 @@ import {
 import Image from "next/image";
 import { useSyncExternalStore } from "react";
 
-// Безопасная проверка клиента для Next.js
 const subscribe = () => () => {};
 const useIsClient = () =>
   useSyncExternalStore(
@@ -49,30 +48,32 @@ const bosses = [
 export default function FamiliarsPage() {
   const isClient = useIsClient();
 
-  // Пока компонент не на клиенте, рендерим пустой фон для стабильности гидратации
-  if (!isClient) return <div className="min-h-screen bg-[#0a0a0c]" />;
+  if (!isClient) return <div className="min-h-screen bg-[#050507]" />;
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground transition-colors duration-500 overflow-hidden font-sans selection:bg-primary/30 selection:text-white">
-      {/* ФОН (БЕЗ СКРУГЛЕНИЙ) */}
-      <div className="absolute inset-0 z-0">
+    <div className="relative min-h-screen bg-[#050507] text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+      {/* --- STATIC BACKGROUND LAYER (60vh) --- */}
+      <div className="absolute top-0 left-0 w-full h-[60vh] z-0 overflow-hidden pointer-events-none">
         <Image
           src="/bg-1.jpg"
-          alt="Familiars"
+          alt="Familiars Background"
           fill
           priority
-          className="object-cover object-center opacity-[0.05] dark:opacity-10 grayscale"
+          className="object-cover object-center grayscale opacity-30"
         />
-        <div className="absolute inset-0 bg-background/90" />
-        <div className="absolute inset-0 bg-grid-white/[0.01] bg-[size:30px_30px]" />
+        {/* CRT Scanline Effect */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(220,38,38,0.06),rgba(0,255,0,0.01),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none" />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-b from-transparent via-[#050507]/40 to-[#050507]" />
       </div>
+      {/* -------------------------------------- */}
 
-      <div className="container relative z-10 mx-auto px-4 pt-40 pb-20">
-        {/* HEADER SECTION - BESTIARY */}
+      <div className="container relative z-10 mx-auto px-6 pt-40 pb-20">
+        {/* HEADER SECTION */}
         <div className="max-w-5xl mb-32 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
-              Bloodcraft Familiars Registry
+              Bloodcraft Familiars Registry // Unit_Capture
             </span>
             <div className="h-px w-24 bg-primary/20" />
           </div>
@@ -84,8 +85,7 @@ export default function FamiliarsPage() {
             </span>
           </h1>
 
-          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5">
-            {/* Технические уголки в стиле HUD */}
+          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5 backdrop-blur-sm">
             <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
             <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
 
@@ -101,17 +101,17 @@ export default function FamiliarsPage() {
           </div>
         </div>
 
-        {/* ИНФО-КАРТОЧКИ (BRUTAL HUD) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border mb-24 shadow-[20px_20px_0px_rgba(0,0,0,0.2)]">
-          <div className="p-10 bg-card/40 flex gap-6 items-start hover:bg-card/60 transition-colors">
+        {/* INFO CARDS (HUD STYLE) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10 mb-24 shadow-2xl">
+          <div className="p-10 bg-[#08080a]/80 backdrop-blur-sm flex gap-6 items-start hover:bg-white/[0.03] transition-colors">
             <Crosshair className="text-primary w-6 h-6 shrink-0" />
             <div>
               <p className="text-[10px] uppercase font-black tracking-widest text-primary mb-3">
                 Механика поимки
               </p>
-              <p className="text-sm text-muted-foreground italic leading-relaxed">
+              <p className="text-sm text-white/40 italic leading-relaxed">
                 Снизьте здоровье босса до{" "}
-                <span className="text-foreground font-bold underline decoration-primary underline-offset-4">
+                <span className="text-white font-bold underline decoration-primary underline-offset-4">
                   25%
                 </span>{" "}
                 и используйте Призму для захвата.
@@ -119,26 +119,26 @@ export default function FamiliarsPage() {
             </div>
           </div>
 
-          <div className="p-10 bg-card/40 flex gap-6 items-start hover:bg-card/60 transition-colors">
+          <div className="p-10 bg-[#08080a]/80 backdrop-blur-sm flex gap-6 items-start hover:bg-white/[0.03] transition-colors">
             <Dna className="text-primary w-6 h-6 shrink-0" />
             <div>
               <p className="text-[10px] uppercase font-black tracking-widest text-primary mb-3">
                 Престиж питомца
               </p>
-              <p className="text-sm text-muted-foreground italic leading-relaxed">
+              <p className="text-sm text-white/40 italic leading-relaxed">
                 Каждый уровень престижа открывает скрытые пассивные навыки и
                 усиливает ауру.
               </p>
             </div>
           </div>
 
-          <div className="p-10 bg-card/40 flex gap-6 items-start hover:bg-card/60 transition-colors">
+          <div className="p-10 bg-[#08080a]/80 backdrop-blur-sm flex gap-6 items-start hover:bg-white/[0.03] transition-colors">
             <ShieldAlert className="text-primary w-6 h-6 shrink-0" />
             <div>
               <p className="text-[10px] uppercase font-black tracking-widest text-primary mb-3">
                 Лимит контроля
               </p>
-              <p className="text-sm text-muted-foreground italic leading-relaxed uppercase tracking-tighter text-[11px]">
+              <p className="text-sm text-white/40 italic leading-relaxed uppercase tracking-tighter text-[11px]">
                 Один активный спутник. Призыв:{" "}
                 <code className="text-primary font-bold">.fam summon</code>
               </p>
@@ -146,7 +146,7 @@ export default function FamiliarsPage() {
           </div>
         </div>
 
-        {/* ТАБЛИЦА БОССОВ (СТРОГАЯ ГЕОМЕТРИЯ) */}
+        {/* BOSSES TABLE */}
         <div className="space-y-8">
           <div className="flex items-end justify-between border-b-2 border-primary/20 pb-6">
             <h2 className="font-serif text-3xl uppercase tracking-tighter italic">
@@ -154,81 +154,83 @@ export default function FamiliarsPage() {
             </h2>
             <div className="flex items-center gap-4">
               <Star className="w-3 h-3 text-primary animate-pulse" />
-              <span className="text-[10px] text-muted-foreground uppercase tracking-[0.3em] font-black">
-                Archives Updated: 2024
+              <span className="text-[10px] text-white/20 uppercase tracking-[0.3em] font-black">
+                Archives Updated: 2025
               </span>
             </div>
           </div>
 
-          <div className="border border-border bg-card/5 backdrop-blur-md overflow-hidden shadow-2xl">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-border bg-white/[0.02]">
-                  <th className="p-8 text-[10px] uppercase tracking-[0.3em] font-black text-muted-foreground border-r border-border">
-                    Существо
-                  </th>
-                  <th className="p-8 text-[10px] uppercase tracking-[0.3em] font-black text-muted-foreground border-r border-border">
-                    Классификация
-                  </th>
-                  <th className="p-8 text-[10px] uppercase tracking-[0.3em] font-black text-muted-foreground border-r border-border">
-                    Даруемый Эффект
-                  </th>
-                  <th className="p-8 text-[10px] uppercase tracking-[0.3em] font-black text-muted-foreground text-right">
-                    Шанс
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {bosses.map((b) => (
-                  <tr
-                    key={b.name}
-                    className="group hover:bg-primary/[0.03] transition-all duration-300"
-                  >
-                    <td className="p-8 border-r border-border">
-                      <div className="flex items-center gap-6">
-                        <div className="w-10 h-10 border border-border flex items-center justify-center text-muted-foreground group-hover:border-primary group-hover:text-primary transition-all">
-                          {b.icon}
-                        </div>
-                        <span className="font-serif text-2xl tracking-tighter text-foreground group-hover:translate-x-2 transition-transform italic">
-                          {b.name}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="p-8 border-r border-border">
-                      <span className="text-[9px] uppercase tracking-[0.2em] font-black text-muted-foreground border border-border px-3 py-1.5 group-hover:border-primary/40 group-hover:text-foreground transition-colors">
-                        {b.type}
-                      </span>
-                    </td>
-                    <td className="p-8 text-sm italic text-muted-foreground font-light border-r border-border group-hover:text-foreground">
-                      {b.bonus}
-                    </td>
-                    <td className="p-8 text-right">
-                      <span className="font-mono text-primary text-lg font-bold tracking-tighter">
-                        {b.chance}
-                      </span>
-                    </td>
+          <div className="border border-white/10 bg-[#08080a]/60 backdrop-blur-md overflow-hidden shadow-2xl">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02]">
+                    <th className="p-8 text-[10px] uppercase tracking-[0.3em] font-black text-white/40 border-r border-white/10">
+                      Существо
+                    </th>
+                    <th className="p-8 text-[10px] uppercase tracking-[0.3em] font-black text-white/40 border-r border-white/10">
+                      Классификация
+                    </th>
+                    <th className="p-8 text-[10px] uppercase tracking-[0.3em] font-black text-white/40 border-r border-white/10">
+                      Даруемый Эффект
+                    </th>
+                    <th className="p-8 text-[10px] uppercase tracking-[0.3em] font-black text-white/40 text-right">
+                      Шанс
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {bosses.map((b) => (
+                    <tr
+                      key={b.name}
+                      className="group hover:bg-primary/[0.03] transition-all duration-300"
+                    >
+                      <td className="p-8 border-r border-white/10">
+                        <div className="flex items-center gap-6">
+                          <div className="w-10 h-10 border border-white/10 flex items-center justify-center text-white/20 group-hover:border-primary group-hover:text-primary transition-all">
+                            {b.icon}
+                          </div>
+                          <span className="font-serif text-2xl tracking-tighter text-white group-hover:translate-x-2 transition-transform italic">
+                            {b.name}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="p-8 border-r border-white/10">
+                        <span className="text-[9px] uppercase tracking-[0.2em] font-black text-white/40 border border-white/10 px-3 py-1.5 group-hover:border-primary/40 group-hover:text-white transition-colors">
+                          {b.type}
+                        </span>
+                      </td>
+                      <td className="p-8 text-sm italic text-white/40 font-light border-r border-white/10 group-hover:text-white/80">
+                        {b.bonus}
+                      </td>
+                      <td className="p-8 text-right">
+                        <span className="font-mono text-primary text-lg font-bold tracking-tighter">
+                          {b.chance}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        {/* ФУТЕР БЛОК (Sharp Edge) */}
-        <div className="mt-16 p-1 bg-border shadow-2xl">
-          <div className="p-12 bg-background flex flex-col md:flex-row justify-between items-center gap-12">
+        {/* FOOTER BLOCK (Terminal) */}
+        <div className="mt-16 p-px bg-white/10 shadow-2xl">
+          <div className="p-12 bg-[#050507] flex flex-col md:flex-row justify-between items-center gap-12">
             <div className="flex items-center gap-6">
               <div className="p-4 bg-primary/10 border border-primary/20">
                 <Info className="w-6 h-6 text-primary" />
               </div>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-muted-foreground font-black leading-relaxed">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-white/40 font-black leading-relaxed">
                 Полная техническая справка: <br />
                 <code className="text-primary text-sm">.fam help_terminal</code>
               </p>
             </div>
             <div className="flex gap-12 border-l border-white/5 pl-12">
               <div className="text-right">
-                <p className="text-[9px] uppercase font-black text-muted-foreground tracking-widest mb-2 opacity-30">
+                <p className="text-[9px] uppercase font-black text-white/20 tracking-widest mb-2">
                   Maximum Rank
                 </p>
                 <p className="font-serif text-3xl text-primary uppercase italic tracking-tighter">
@@ -236,7 +238,7 @@ export default function FamiliarsPage() {
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-[9px] uppercase font-black text-muted-foreground tracking-widest mb-2 opacity-30">
+                <p className="text-[9px] uppercase font-black text-white/20 tracking-widest mb-2">
                   Capture System
                 </p>
                 <p className="font-serif text-3xl text-white uppercase italic tracking-tighter">
@@ -255,22 +257,8 @@ export default function FamiliarsPage() {
           font-family: "Cinzel", serif;
         }
 
-        /* Принудительный сброс всех скруглений в проекте */
         * {
           border-radius: 0 !important;
-        }
-
-        ::-webkit-scrollbar {
-          width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #0a0a0c;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #1a1a1e;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #dc2626;
         }
       `}</style>
     </div>

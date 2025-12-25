@@ -57,21 +57,21 @@ const stats = [
   {
     id: "ATTR-01",
     name: "Сила (STR)",
-    icon: <Sword className="w-5 h-5 text-primary" />,
+    icon: <Sword className="w-5 h-5" />,
     desc: "Увеличивает физический урон и общую мощь заклинаний крови.",
     attr: "ATK_BOOST: +2.5%",
   },
   {
     id: "ATTR-02",
     name: "Живучесть (VIT)",
-    icon: <Heart className="w-5 h-5 text-primary" />,
+    icon: <Heart className="w-5 h-5" />,
     desc: "Увеличивает максимальный запас ОЗ и общую сопротивляемость.",
     attr: "HP_POOL: +40",
   },
   {
     id: "ATTR-03",
     name: "Интеллект (INT)",
-    icon: <Zap className="w-5 h-5 text-primary" />,
+    icon: <Zap className="w-5 h-5" />,
     desc: "Ускоряет перезарядку способностей и увеличивает запас маны.",
     attr: "CDR_RATE: +1.2%",
   },
@@ -81,27 +81,28 @@ export default function ProgressionPage() {
   const [activePrestige, setActivePrestige] = useState(prestigeBonuses[0]);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white font-sans relative overflow-hidden selection:bg-primary/30">
-      {/* BACKGROUND - CLEAN HUD STYLE */}
-      <div className="absolute inset-0 z-0">
+    <div className="min-h-screen bg-[#050507] text-white font-sans relative selection:bg-primary/30">
+      {/* --- STATIC BACKGROUND LAYER (60vh) --- */}
+      <div className="absolute top-0 left-0 w-full h-[60vh] z-0 overflow-hidden pointer-events-none">
         <Image
           src="/bg-2.jpg"
-          alt="Progression"
+          alt="Progression Background"
           fill
           priority
-          className="object-cover opacity-10 grayscale"
+          className="object-cover grayscale opacity-30"
         />
-        {/* Чистые сканирующие линии без красного оттенка */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,255,255,0.01),rgba(0,0,0,0),rgba(255,255,255,0.01))] bg-[size:100%_4px,3px_100%]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#050505_100%)]" />
+        {/* CRT Scanline Effect */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(220,38,38,0.06),rgba(0,255,0,0.01),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none" />
+        {/* Dark Gradient Overlay */}
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-b from-transparent via-[#050507]/40 to-[#050507]" />
       </div>
 
-      <div className="container relative z-20 mx-auto px-4 pt-44 pb-32">
+      <div className="container relative z-10 mx-auto px-6 pt-40 pb-32">
         {/* HEADER SECTION */}
         <div className="max-w-5xl mb-32 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
-              Vardoran Evolution Protocol
+              Vardoran Evolution Protocol // System_Growth
             </span>
             <div className="h-px w-24 bg-primary/20" />
           </div>
@@ -113,7 +114,7 @@ export default function ProgressionPage() {
             </span>
           </h1>
 
-          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5">
+          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5 backdrop-blur-sm">
             <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
             <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
 
@@ -121,7 +122,7 @@ export default function ProgressionPage() {
               «Ваша эволюция не имеет предела. Анализируйте <br />
               атрибуты и активируйте циклы престижа для <br />
               достижения формы{" "}
-              <span className="text-white font-bold not-italic font-sans">
+              <span className="text-white font-bold not-italic">
                 Высшего Хищника
               </span>
               .»
@@ -130,11 +131,11 @@ export default function ProgressionPage() {
         </div>
 
         {/* STATS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10 mb-24 shadow-2xl">
           {stats.map((s) => (
             <div
               key={s.id}
-              className="group relative p-10 bg-[#080808] hover:bg-[#0c0c0c] transition-all duration-300 overflow-hidden"
+              className="group relative p-10 bg-[#08080a]/90 backdrop-blur-sm hover:bg-white/[0.03] transition-all duration-300"
             >
               <div className="flex justify-between items-start mb-12">
                 <div className="text-primary">{s.icon}</div>
@@ -158,7 +159,7 @@ export default function ProgressionPage() {
         </div>
 
         {/* PRESTIGE BLOCK */}
-        <div className="relative border border-white/10 bg-[#080808] p-8 md:p-16">
+        <div className="relative border border-white/10 bg-[#08080a]/80 backdrop-blur-md p-8 md:p-16 shadow-2xl">
           <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary opacity-50" />
           <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary opacity-50" />
 
@@ -178,10 +179,10 @@ export default function ProgressionPage() {
               </h2>
 
               <div
-                className="min-h-[200px] border-l-2 border-primary bg-white/[0.02] p-10 relative"
+                className="min-h-[220px] border-l-2 border-primary bg-white/[0.02] p-10 relative"
                 key={activePrestige.lvl}
               >
-                <div className="absolute top-0 right-0 p-4 font-mono text-4xl font-black italic text-white/5 pointer-events-none">
+                <div className="absolute top-0 right-0 p-4 font-mono text-5xl font-black italic text-white/[0.03] pointer-events-none select-none">
                   #{activePrestige.lvl}
                 </div>
                 <div className="flex items-center gap-3 mb-6 font-mono text-xl font-black italic text-primary">
@@ -208,7 +209,7 @@ export default function ProgressionPage() {
                   ${
                     activePrestige.lvl === item.lvl
                       ? "bg-primary text-white"
-                      : "bg-[#050505] text-white hover:bg-white/[0.08]"
+                      : "bg-[#050507] text-white hover:bg-white/[0.08]"
                   }`}
                   >
                     <span
@@ -228,19 +229,19 @@ export default function ProgressionPage() {
               </div>
 
               {/* STATUS BLOCK */}
-              <div className="border border-white/10 bg-[#050505]">
+              <div className="border border-white/10 bg-[#050507]">
                 <div className="flex divide-x divide-white/10 border-b border-white/10">
                   <div className="p-6 flex-1 text-left">
                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 block mb-2 italic">
                       Статус
                     </span>
                     <span className="font-serif text-xl md:text-2xl font-black text-primary italic uppercase tracking-tighter">
-                      Доступно для разблокировки
+                      Готов к активации
                     </span>
                   </div>
                   <div className="p-6 bg-white/[0.01] flex flex-col justify-center items-end">
                     <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20 block mb-2 italic">
-                      Требование
+                      Условие
                     </span>
                     <span className="font-serif text-2xl font-black text-white italic">
                       LVL 100
@@ -271,8 +272,7 @@ export default function ProgressionPage() {
                         <span className="text-white">
                           сбросу текущего снаряжения
                         </span>{" "}
-                        и уровня. Протокол необратим. Подтвердите готовность к
-                        перерождению.
+                        и уровня. Протокол необратим.
                       </p>
                     </div>
                   </div>
@@ -284,6 +284,7 @@ export default function ProgressionPage() {
       </div>
 
       <style jsx global>{`
+        @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;900&display=swap");
         * {
           border-radius: 0 !important;
         }

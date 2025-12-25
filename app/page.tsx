@@ -142,19 +142,6 @@ export default function Page() {
         * {
           border-radius: 0 !important;
         }
-
-        ::-webkit-scrollbar {
-          width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #0a0a0c;
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #1a1a1e;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #dc2626;
-        }
       `}</style>
     </main>
   );
