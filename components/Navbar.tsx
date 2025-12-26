@@ -58,172 +58,163 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  return (
-    <nav
-      className={cn(
-        "fixed top-0 left-0 right-0 z-[100] transition-all duration-500",
-        isScrolled
-          ? "bg-[#050505] border-b border-primary py-4 shadow-2xl"
-          : "bg-transparent border-b border-white/10 py-8"
-      )}
-    >
-      <div className="container mx-auto px-6 flex items-center justify-between">
-        {/* ЛОГОТИП */}
-        <Link href="/" className="flex items-center gap-3 outline-none group">
-          <div className="flex flex-col border-l-2 border-primary pl-3">
-            <span className="text-xl font-black tracking-[0.2em] leading-none text-white uppercase italic">
-              Court
-            </span>
-            <span className="text-[10px] font-black tracking-[0.55em] leading-none text-primary uppercase mt-1">
-              of Darkness
-            </span>
-          </div>
-        </Link>
+  // Блокировка скролла при открытом меню
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
+  }, [isMobileMenuOpen]);
 
-        {/* ДЕСКТОПНАЯ НАВИГАЦИЯ */}
-        <div className="hidden lg:flex items-center gap-2 h-full">
-          <Link
-            href="/"
-            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-white transition-all"
-          >
-            Главная
+  return (
+    <>
+      <nav
+        className={cn(
+          "fixed top-0 left-0 right-0 z-[100] transition-all duration-500 font-sans",
+          isScrolled
+            ? "bg-[#050505]/95 backdrop-blur-md border-b border-primary py-4"
+            : "bg-transparent border-b border-white/5 py-7"
+        )}
+      >
+        <div className="container mx-auto px-6 flex items-center justify-between">
+          {/* ЛОГОТИП */}
+          <Link href="/" className="flex items-center gap-3 group z-[110]">
+            <div className="flex flex-col border-l-2 border-primary pl-3">
+              <span className="text-xl font-black tracking-[0.2em] leading-none text-white uppercase italic transition-colors group-hover:text-primary">
+                Court
+              </span>
+              <span className="text-[10px] font-black tracking-[0.55em] leading-none text-primary uppercase mt-1">
+                of Darkness
+              </span>
+            </div>
           </Link>
 
-          {/* ВЫПАДАЮЩИЙ СПИСОК (БАЗА ЗНАНИЙ) */}
-          <div
-            className="relative flex items-center h-full"
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
-          >
-            <button
-              className={cn(
-                "px-6 py-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-black transition-all outline-none",
-                isDropdownOpen
-                  ? "text-primary"
-                  : "text-white/50 hover:text-white"
-              )}
+          {/* ДЕСКТОП НАВИГАЦИЯ */}
+          <div className="hidden lg:flex items-center gap-2">
+            <NavLink href="/">Главная</NavLink>
+
+            {/* ВЫПАДАЮЩИЙ СПИСОК */}
+            <div
+              className="relative group"
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
             >
-              База Знаний
-              <ChevronDown
+              <button
                 className={cn(
-                  "w-3.5 h-3.5 transition-transform duration-300",
-                  isDropdownOpen && "rotate-180"
+                  "px-5 py-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-black transition-all outline-none",
+                  isDropdownOpen
+                    ? "text-primary"
+                    : "text-white/50 hover:text-white"
                 )}
-              />
-            </button>
+              >
+                База Знаний
+                <ChevronDown
+                  className={cn(
+                    "w-3 transition-transform duration-300",
+                    isDropdownOpen && "rotate-180"
+                  )}
+                />
+              </button>
 
-            {isDropdownOpen && (
-              <div className="absolute top-full left-0 pt-4 w-80 animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className="bg-[#080808] border border-white/10 p-1 shadow-[0_20px_50px_rgba(0,0,0,0.9)] relative">
-                  {/* HUD Уголки */}
-                  <div className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-primary" />
-                  <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-primary" />
+              {isDropdownOpen && (
+                <div className="absolute top-full left-0 pt-4 w-72 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="bg-[#080808] border border-white/10 p-1 shadow-2xl relative">
+                    {/* HUD уголки */}
+                    <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-primary" />
+                    <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-primary" />
 
-                  {knowledgeLinks.map((link, index) => (
-                    <Link
-                      key={link.name}
-                      href={link.href}
-                      className="group flex items-center justify-between p-4 transition-all duration-200 hover:bg-white"
-                    >
-                      <div className="flex items-center gap-4">
-                        <span className="text-primary group-hover:text-black transition-colors duration-200">
-                          {link.icon}
-                        </span>
-                        <div className="flex flex-col text-left">
-                          <span className="text-[10px] uppercase tracking-[0.25em] font-black text-white/80 group-hover:text-black transition-colors">
+                    {knowledgeLinks.map((link) => (
+                      <Link
+                        key={link.name}
+                        href={link.href}
+                        className="group/item flex items-center justify-between p-4 transition-all hover:bg-primary"
+                      >
+                        <div className="flex items-center gap-4">
+                          <span className="text-primary group-hover/item:text-white transition-colors">
+                            {link.icon}
+                          </span>
+                          <span className="text-[9px] uppercase tracking-widest font-black text-white group-hover/item:text-white">
                             {link.name}
                           </span>
-                          <span className="text-[7px] font-mono text-white/20 group-hover:text-black/50 uppercase tracking-tighter">
-                            Registry_ID: 00{index + 1}
-                          </span>
                         </div>
-                      </div>
-                      <ChevronRight className="w-3 h-3 text-black opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
-                    </Link>
-                  ))}
-
-                  {/* Нижняя системная строка */}
-                  <div className="mt-1 py-1.5 px-4 border-t border-white/5 bg-white/[0.02]">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[6px] font-mono text-white/10 uppercase tracking-[0.4em]">
-                        Access_Protocol: Verified
-                      </span>
-                      <div className="w-1 h-1 bg-primary/30 animate-pulse" />
-                    </div>
+                        <ChevronRight className="w-3 h-3 text-white opacity-0 group-hover/item:opacity-100 transition-all" />
+                      </Link>
+                    ))}
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
+            <NavLink href="/guides">Гайды</NavLink>
+            <NavLink href="/rules">Правила</NavLink>
+            <NavLink href="/commands">Команды</NavLink>
           </div>
 
-          <Link
-            href="/guides"
-            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-white transition-all"
-          >
-            Гайды
-          </Link>
-          <Link
-            href="/commands"
-            className="px-6 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-white transition-all"
-          >
-            Команды
-          </Link>
-        </div>
+          {/* ПРАВАЯ ЧАСТЬ (ДИСКОРД) */}
+          <div className="hidden lg:flex items-center gap-6">
+            <Button
+              asChild
+              className="bg-primary text-white hover:bg-white hover:text-black transition-all px-8 text-[10px] uppercase tracking-[0.4em] font-black h-11 shadow-[4px_4px_0px_rgba(220,38,38,0.3)]"
+            >
+              <Link href="https://discord.gg/your-link">Discord</Link>
+            </Button>
+          </div>
 
-        {/* ПРАВАЯ ЧАСТЬ (ДИСКОРД) */}
-        <div className="hidden lg:flex items-center gap-10">
-          {isClient && (
-            <div className="flex items-center gap-8">
-              <Button
-                asChild
-                className="bg-primary text-white hover:bg-white hover:text-black transition-all px-10 text-[10px] uppercase tracking-[0.4em] font-black h-12 shadow-[4px_4px_0px_rgba(220,38,38,0.3)] active:translate-y-[2px]"
-              >
-                <Link href="https://discord.gg/your-link">Дискорд</Link>
-              </Button>
-            </div>
-          )}
-        </div>
-
-        {/* МОБИЛЬНЫЙ ТРИГГЕР */}
-        <div className="lg:hidden">
+          {/* МОБИЛЬНЫЙ ТРИГГЕР */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="text-primary p-3 border border-white/10"
+            className="lg:hidden z-[120] text-primary p-2 border border-white/10 bg-white/[0.03] active:scale-90 transition-all"
           >
-            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
-      </div>
+      </nav>
 
-      {/* МОБИЛЬНОЕ МЕНЮ */}
+      {/* ПОЛНОЭКРАННОЕ МОБИЛЬНОЕ МЕНЮ */}
       {isMobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-[#0c0c0e] border-b border-primary animate-in slide-in-from-top-4 lg:hidden">
-          <div className="flex flex-col p-8 gap-6">
-            <Link
-              href="/"
+        <div className="fixed inset-0 bg-[#050505] z-[115] flex flex-col p-10 pt-36 animate-in fade-in slide-in-from-right-4 duration-300 lg:hidden">
+          {/* Декор фона */}
+          <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 blur-[120px] pointer-events-none" />
+
+          <div className="flex flex-col gap-6 relative z-10">
+            <MobileNavLink href="/" onClick={() => setIsMobileMenuOpen(false)}>
+              Главная
+            </MobileNavLink>
+            <MobileNavLink
+              href="/guides"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-[10px] uppercase font-black tracking-[0.4em] text-primary"
             >
-              Главный Терминал
-            </Link>
-            <div className="grid grid-cols-1 gap-2">
+              Гайды
+            </MobileNavLink>
+            <MobileNavLink
+              href="/rules"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Правила
+            </MobileNavLink>
+
+            <div className="h-px bg-white/5 my-4 relative">
+              <span className="absolute left-0 -top-2 bg-[#050505] pr-4 text-[8px] font-mono text-primary uppercase tracking-[0.5em]">
+                Knowledge_Data
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3">
               {knowledgeLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center justify-between p-5 bg-white/5 text-[9px] font-black uppercase tracking-widest"
+                  className="flex items-center gap-4 p-5 bg-white/[0.02] border border-white/5 text-white/40 active:text-primary active:border-primary/50 transition-all uppercase text-[10px] font-black tracking-widest"
                 >
-                  <div className="flex items-center gap-4">
-                    <span className="text-primary">{link.icon}</span>
-                    {link.name}
-                  </div>
-                  <ChevronRight className="w-4 h-4 text-primary" />
+                  <span className="text-primary">{link.icon}</span>
+                  {link.name}
                 </Link>
               ))}
             </div>
-            <Button className="w-full h-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.5em]">
-              Discord Server
+
+            <Button
+              asChild
+              className="mt-8 w-full h-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.5em] shadow-[6px_6px_0px_rgba(220,38,38,0.2)]"
+            >
+              <Link href="https://discord.gg/your-link">Join Community</Link>
             </Button>
           </div>
         </div>
@@ -234,6 +225,46 @@ export default function Navbar() {
           border-radius: 0 !important;
         }
       `}</style>
-    </nav>
+    </>
+  );
+}
+
+// Вспомогательный компонент для десктопных ссылок
+function NavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      className="px-5 py-2 text-[10px] uppercase tracking-[0.3em] font-black text-white/50 hover:text-white transition-all relative group"
+    >
+      {children}
+      <div className="absolute bottom-0 left-5 right-5 h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-center" />
+    </Link>
+  );
+}
+
+// Вспомогательный компонент для мобильных ссылок
+function MobileNavLink({
+  href,
+  onClick,
+  children,
+}: {
+  href: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className="text-3xl font-black uppercase tracking-widest text-white hover:text-primary transition-colors italic border-l-2 border-transparent hover:border-primary pl-4"
+    >
+      {children}
+    </Link>
   );
 }

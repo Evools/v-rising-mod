@@ -40,14 +40,25 @@ function Footer() {
               Навигация
             </h4>
             <ul className="space-y-5">
-              {["Классы", "Мир", "Гайды", "Команды"].map((link) => (
-                <li key={link}>
+              {[
+                {
+                  name: "Классы",
+                  href: "/classes",
+                },
+                { name: "Мир", href: "/world" },
+                { name: "Гайды", href: "/guides" },
+                { name: "Команды", href: "/commands" },
+              ].map((link) => (
+                <li key={link.name}>
                   <Link
-                    href={`/${link.toLowerCase()}`}
+                    href={link.href}
                     className="text-[11px] uppercase tracking-widest text-muted-foreground hover:text-white transition-colors flex items-center gap-4 group font-bold"
                   >
-                    <div className="w-0 h-px bg-primary group-hover:w-4 transition-all" />
-                    {link}
+                    <div className="w-0 h-px bg-primary group-hover:w-6 transition-all duration-300 ease-out" />
+
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {link.name}
+                    </span>
                   </Link>
                 </li>
               ))}
