@@ -174,6 +174,15 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center gap-10">
           {isClient && (
             <div className="flex items-center gap-8">
+              <div className="h-8 w-px bg-white/10" />
+              <div className="flex flex-col items-end">
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-primary animate-pulse" />
+                  <span className="text-[9px] font-black text-white uppercase tracking-widest">
+                    Сервер Онлайн
+                  </span>
+                </div>
+              </div>
               <Button
                 asChild
                 className="bg-primary text-white hover:bg-white hover:text-black transition-all px-10 text-[10px] uppercase tracking-[0.4em] font-black h-12 shadow-[4px_4px_0px_rgba(220,38,38,0.3)] active:translate-y-[2px]"
