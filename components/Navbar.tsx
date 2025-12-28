@@ -58,7 +58,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Блокировка скролла при открытом меню
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "unset";
   }, [isMobileMenuOpen]);
@@ -86,11 +85,9 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* ДЕСКТОП НАВИГАЦИЯ */}
           <div className="hidden lg:flex items-center gap-2">
             <NavLink href="/">Главная</NavLink>
 
-            {/* ВЫПАДАЮЩИЙ СПИСОК */}
             <div
               className="relative group"
               onMouseEnter={() => setIsDropdownOpen(true)}
@@ -116,7 +113,6 @@ export default function Navbar() {
               {isDropdownOpen && (
                 <div className="absolute top-full left-0 pt-4 w-72 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="bg-[#080808] border border-white/10 p-1 shadow-2xl relative">
-                    {/* HUD уголки */}
                     <div className="absolute top-0 left-0 w-1 h-1 border-t border-l border-primary" />
                     <div className="absolute bottom-0 right-0 w-1 h-1 border-b border-r border-primary" />
 
@@ -142,7 +138,7 @@ export default function Navbar() {
               )}
             </div>
 
-            <NavLink href="/guides">Гайды</NavLink>
+            <NavLink href="/wiki">Wiki</NavLink>
             <NavLink href="/rules">Правила</NavLink>
             <NavLink href="/commands">Команды</NavLink>
           </div>

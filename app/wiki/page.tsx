@@ -1,159 +1,233 @@
 "use client";
 
+import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import {
-  Binary,
-  Book,
+  Search,
   ChevronRight,
+  Zap,
+  Sword,
   Droplets,
   Globe,
-  Sword,
-  Zap,
+  Layers,
+  Shield,
+  Skull,
+  Hammer,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
-const wikiCategories = [
+// --- ТИПИЗАЦИЯ ДАННЫХ ---
+interface WikiCategory {
+  id: string;
+  title: string;
+  slug: string;
+  icon: React.ReactNode; // Поддержка Lucide иконок
+  count: string;
+  description: string;
+  tags: string[];
+}
+
+// --- МАССИВ ДАННЫХ (На основе V Rising Wiki) ---
+const wikiCategories: WikiCategory[] = [
   {
-    id: "01",
-    title: "Путь Магии",
-    slug: "classes",
-    icon: <Zap className="w-6 h-6" />,
-    color: "text-purple-400",
-    desc: "Изучите доступные магические классы, их уникальные пассивные навыки и синергию с экипировкой.",
-    stats: "12 Классов / 48 Способностей",
+    id: "V-Кровь",
+    title: "Носители V-крови",
+    slug: "v-blood",
+    icon: <Skull className="w-6 h-6" />,
+    count: "50+ целей",
+    description:
+      "Полное досье на боссов Вардорана: способности, тактики и открываемые технологии.",
+    tags: ["Боссы", "Способности", "Прогрессия", "Охота"],
   },
   {
-    id: "02",
-    title: "Арсенал",
-    slug: "weapons",
+    id: "Ресурсы",
+    title: "Ресурсы и Добыча",
+    slug: "resources",
+    icon: <Layers className="w-6 h-6" />,
+    count: "100+ предметов",
+    description:
+      "Гайды по сбору материалов: от хлопка и железа до темного серебра и драгоценных камней.",
+    tags: ["Фарм", "Локации", "Руда", "Рецепты"],
+  },
+  {
+    id: "Строительство",
+    title: "Архитектура Замка",
+    slug: "castle",
+    icon: <Shield className="w-6 h-6" />,
+    count: "30 гайдов",
+    description:
+      "Строительство цитадели: защита сердца замка, планировка этажей и декор.",
+    tags: ["База", "Защита", "Слуги", "Дизайн"],
+  },
+  {
+    id: "Сняряжение",
+    title: "Снаряжение",
+    slug: "gear",
     icon: <Sword className="w-6 h-6" />,
-    color: "text-amber-500",
-    desc: "Мастерство владения оружием (Expertise). Как эффективно прокачивать и какие статы выбирать.",
-    stats: "14 Типов оружия / 30+ Статов",
+    count: "40 сетов",
+    description:
+      "Обзор оружия, брони и аксессуаров. Сравнение характеристик и бонусов наборов.",
+    tags: ["Броня", "Оружие", "Артефакты", "Крафт"],
   },
   {
-    id: "03",
-    title: "Чистота Крови",
-    slug: "blood",
-    icon: <Droplets className="w-6 h-6" />,
-    color: "text-red-500",
-    desc: "Система наследия, типы крови и их влияние на RPG-составляющую вашего персонажа.",
-    stats: "7 Типов крови / Legacy System",
-  },
-  {
-    id: "04",
-    title: "Мироустройство",
-    slug: "world",
-    icon: <Globe className="w-6 h-6" />,
-    color: "text-sky-400",
-    desc: "Рейд-таймы, боссы, экономика сервера и правила захвата территорий.",
-    stats: "V-Blood Echoes / Economy",
+    id: "Магия",
+    title: "Магия и Кровь",
+    slug: "magic",
+    icon: <Zap className="w-6 h-6" />,
+    count: "15 типов",
+    description:
+      "Система заклинаний, типы резонанса крови и магические расходники.",
+    tags: ["Школы магии", "Ульта", "Баффы"],
   },
 ];
 
 export default function WikiPage() {
+  const [activeCategory, setActiveCategory] = useState<string>("ALL");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Фильтрация с типизацией
+  const filteredArticles = useMemo(() => {
+    return wikiCategories.filter((cat) => {
+      const searchStr = searchQuery.toLowerCase();
+      const matchesSearch =
+        cat.title.toLowerCase().includes(searchStr) ||
+        cat.tags.some((t) => t.toLowerCase().includes(searchStr));
+
+      const matchesCategory =
+        activeCategory === "ALL" || cat.id === activeCategory;
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [searchQuery, activeCategory]);
+
   return (
-    <main className="min-h-screen bg-[#0a0a0c] pt-32 pb-20 px-4 font-sans selection:bg-primary">
-      <div className="container mx-auto">
-        {/* HEADER */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 border-b border-white/5 pb-12">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-px w-8 bg-primary" />
-              <span className="text-primary font-black tracking-[0.5em] text-[10px] uppercase">
-                Central_Database_v1.0
+    <div className="relative min-h-screen bg-[#050505] selection:bg-primary/30 font-sans overflow-hidden text-white">
+      {/* ФОНОВЫЙ СЛОЙ */}
+      <div className="absolute top-0 left-0 w-full h-[70vh] z-0 overflow-hidden">
+        <Image
+          src="/bg-3.jpg" // Убедись, что файл есть в public/
+          alt="Wiki Background"
+          fill
+          className="object-cover object-center grayscale opacity-30 animate-[pulse_15s_ease-in-out_infinite]"
+          priority
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none z-10 opacity-20" />
+        <div className="absolute inset-x-0 bottom-0 h-full bg-gradient-to-b from-transparent via-[#050505]/60 to-[#050505] z-20" />
+      </div>
+
+      <div className="container relative z-30 mx-auto px-6 pt-40 pb-32">
+        {/* ШАПКА В ТВОЕМ СТИЛЕ */}
+        <div className="max-w-5xl mb-24 border-l-[3px] border-primary pl-10 animate-in fade-in slide-in-from-left-10 duration-1000">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-primary font-black tracking-[0.8em] uppercase text-[10px]">
+              Vampire Terminal // Wiki Unit
+            </span>
+            <div className="h-px w-24 bg-primary/20" />
+          </div>
+
+          <h1 className="font-serif text-[7vw] md:text-[80px] text-white font-black tracking-tighter leading-[0.85] uppercase italic mb-10">
+            ВАЖНОЕ И <br />
+            <span className="not-italic text-primary drop-shadow-[0_0_40px_rgba(220,38,38,0.6)]">
+              ПОЛЕЗНОЕ
+            </span>
+          </h1>
+
+          <div className="relative inline-block py-6 px-10 bg-white/[0.02] border border-white/5 backdrop-blur-sm">
+            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary" />
+            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary" />
+            <p className="max-w-xl text-white/50 text-base md:text-lg tracking-widest font-light uppercase italic leading-relaxed">
+              Центральный реестр знаний Вардорана. <br />
+              <span className="text-white font-bold not-italic underline decoration-primary decoration-2 underline-offset-8 uppercase text-xs tracking-[0.2em]">
+                Выберите сектор данных для анализа
               </span>
-            </div>
-            <h1 className="text-6xl md:text-8xl font-serif font-black uppercase italic tracking-tighter text-white leading-none">
-              The <span className="text-primary">/</span> Archive
-            </h1>
-            <p className="mt-6 text-white/30 text-sm uppercase tracking-[0.2em] font-light">
-              Полное руководство по выживанию и доминированию в мире Blood &
-              Wine.
             </p>
           </div>
-          <div className="flex items-center gap-4 bg-white/5 p-4 border border-white/10 backdrop-blur-md">
-            <Binary className="text-primary w-5 h-5" />
-            <div className="text-left">
-              <p className="text-[9px] text-white/40 uppercase font-bold tracking-widest">
-                System_Access
-              </p>
-              <p className="text-xs text-white font-mono uppercase">
-                Level: Administrator
-              </p>
+
+          {/* ПОИСК */}
+          <div className="relative max-w-2xl mt-12 group">
+            <div className="absolute -top-3 -left-3 w-6 h-6 border-t-2 border-l-2 border-primary z-20" />
+            <div className="relative overflow-hidden border border-white/10 bg-[#080808]/60 backdrop-blur-md">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-primary z-30" />
+              <input
+                type="text"
+                placeholder="ПОИСК ПО БАЗЕ ДАННЫХ..."
+                className="w-full bg-transparent py-6 pl-16 pr-8 text-white text-xs uppercase tracking-[0.3em] focus:outline-none focus:bg-white/[0.05] transition-all relative z-20"
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
           </div>
         </div>
 
-        {/* GRID BOXES */}
-        <div className="grid md:grid-cols-2 gap-px bg-white/5 border border-white/5">
-          {wikiCategories.map((cat) => (
-            <Link
-              href={`/wiki/${cat.slug}`}
-              key={cat.id}
-              className="group relative bg-[#0a0a0c] p-10 hover:bg-white/[0.02] transition-all overflow-hidden"
-            >
-              {/* Фоновый номер секции */}
-              <span className="absolute -right-4 -bottom-8 text-[12rem] font-black text-white/[0.02] group-hover:text-primary/[0.03] transition-colors pointer-events-none">
-                {cat.id}
-              </span>
-
-              <div className="relative z-10">
-                <div
+        {/* ОСНОВНОЙ КОНТЕНТ */}
+        <div className="grid lg:grid-cols-4 gap-12 items-start">
+          {/* НАВИГАЦИЯ (САЙДБАР) */}
+          <aside className="lg:col-span-1 space-y-4 lg:sticky lg:top-32">
+            <div className="flex flex-col gap-px bg-white/5 border border-white/5 shadow-2xl">
+              {["ALL", ...wikiCategories.map((c) => c.id)].map((id) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveCategory(id)}
                   className={cn(
-                    "mb-6 inline-block p-3 bg-white/5 border border-white/10 transition-colors group-hover:border-primary/50",
-                    cat.color
+                    "p-6 text-left transition-all uppercase text-[10px] font-bold tracking-[0.2em] border-l-2 flex justify-between items-center",
+                    activeCategory === id
+                      ? "bg-primary/10 border-primary text-white"
+                      : "bg-[#080808] border-transparent text-white/30 hover:text-white hover:bg-white/[0.02]"
                   )}
                 >
-                  {cat.icon}
-                </div>
+                  {id === "ALL" ? "Полный доступ" : id}
+                  {activeCategory === id && (
+                    <div className="w-1.5 h-1.5 bg-primary" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </aside>
 
-                <h2 className="text-3xl font-black uppercase italic text-white mb-4 tracking-wider group-hover:text-primary transition-colors">
-                  {cat.title}
-                </h2>
+          {/* СЕТКА КАТЕГОРИЙ */}
+          <div className="lg:col-span-3 grid grid-cols-2 gap-6">
+            {filteredArticles.map((cat, i) => (
+              <Link
+                href={`/wiki/${cat.slug}`}
+                key={cat.id}
+                className="group relative bg-[#080808]/40 border border-white/5 p-8 md:p-10 transition-all duration-500 hover:border-primary/40 flex flex-col md:flex-row gap-10 items-center slide-in-from-bottom-5"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary opacity-0 group-hover:opacity-100 transition-all" />
+                <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary opacity-0 group-hover:opacity-100 transition-all" />
 
-                <p className="text-white/40 text-sm leading-relaxed mb-8 max-w-sm group-hover:text-white/60 transition-colors">
-                  {cat.desc}
-                </p>
-
-                <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                  <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest group-hover:text-white/40">
-                    {cat.stats}
-                  </span>
-                  <div className="flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-4 group-hover:translate-x-0">
-                    <span className="text-[10px] font-black uppercase tracking-widest">
-                      Открыть
+                {/* Текстовый блок */}
+                <div className="flex-grow space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-primary font-bold tracking-widest uppercase">
+                      Node::{cat.id}
                     </span>
-                    <ChevronRight className="w-4 h-4" />
+                    <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">
+                      {cat.count}
+                    </span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter group-hover:text-primary transition-colors">
+                    {cat.title}
+                  </h2>
+                  <p className="text-white/40 text-sm italic font-light leading-relaxed max-w-xl group-hover:text-white/70 transition-colors">
+                    {cat.description}
+                  </p>
+
+                  {/* Теги */}
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {cat.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[9px] font-bold uppercase tracking-widest px-3 py-1 bg-white/[0.03] border border-white/5 text-white/20 group-hover:text-primary/80 group-hover:border-primary/20 transition-all"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {/* HELP SECTION */}
-        <div className="mt-20 p-12 bg-primary/5 border border-primary/20 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-6 text-center md:text-left">
-            <div className="p-4 bg-primary text-white">
-              <Book className="w-8 h-8" />
-            </div>
-            <div>
-              <h3 className="text-xl font-black uppercase italic text-white">
-                Не нашли нужную информацию?
-              </h3>
-              <p className="text-white/50 text-sm mt-1">
-                Наша библиотека постоянно обновляется сообществом и
-                администрацией.
-              </p>
-            </div>
+              </Link>
+            ))}
           </div>
-          <Link
-            href="/support"
-            className="px-10 py-5 bg-white text-black font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all text-xs"
-          >
-            Задать вопрос
-          </Link>
         </div>
       </div>
 
@@ -164,10 +238,7 @@ export default function WikiPage() {
         .font-serif {
           font-family: "Cinzel", serif;
         }
-        .text-shadow-glow {
-          text-shadow: 0 0 30px rgba(220, 38, 38, 0.5);
-        }
       `}</style>
-    </main>
+    </div>
   );
 }
