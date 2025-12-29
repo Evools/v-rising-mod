@@ -1,4 +1,6 @@
+import BackgroundMusic from "@/components/BackgroundMusic";
 import Navbar from "@/components/Navbar";
+import SnowParticles from "@/components/SnowParticles";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
@@ -44,6 +46,8 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
+          <SnowParticles />
+          <BackgroundMusic />
           <Navbar />
           {children}
         </ThemeProvider>
