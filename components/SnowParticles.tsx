@@ -24,7 +24,7 @@ export default function SnowParticles() {
         fpsLimit: 60,
         particles: {
           number: {
-            value: 200, // Количество снежинок
+            value: 80, // Количество снежинок
             density: { enable: true },
           },
           color: {

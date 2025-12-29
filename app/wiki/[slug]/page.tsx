@@ -6,7 +6,6 @@ import {
   ChevronLeft,
   Activity,
   Target,
-  Box,
   Info,
   Zap,
   GanttChartSquare,
@@ -59,7 +58,9 @@ export default function WikiArticlePage() {
               {content.title}
             </h1>
             <p className="text-white/40 text-lg italic max-w-2xl leading-relaxed">
-              {content.description}
+              {typeof content.description === "string"
+                ? content.description
+                : "Описание секции данных..."}
             </p>
           </div>
         </div>
@@ -75,7 +76,6 @@ export default function WikiArticlePage() {
                 key={idx}
                 className="group relative bg-[#080808]/60 border border-white/5 hover:border-primary/30 transition-all overflow-hidden flex flex-col md:flex-row"
               >
-                {/* ЛЕВАЯ ЧАСТЬ: Изображение (адаптировано под высокие картинки) */}
                 <div className="relative w-full md:w-64 h-72 md:h-auto overflow-hidden bg-white/5 border-b md:border-b-0 md:border-r border-white/5">
                   {item.image ? (
                     <Image

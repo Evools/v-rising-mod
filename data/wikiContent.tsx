@@ -1,5 +1,5 @@
 import React from "react";
-import { Skull, Layers, Shield, Sword, Zap } from "lucide-react";
+import { Skull, Layers, Shield, Sword, Zap, Map } from "lucide-react";
 
 // Типизация для подразделов статьи
 export interface WikiSection {
@@ -18,8 +18,10 @@ export interface WikiArticle {
   title: string;
   subtitle: string;
   icon: React.ReactNode;
-  description: string;
+  description: WikiSection | string;
   sections: WikiSection[];
+  tags?: string[];
+  externalLink?: string;
 }
 
 export const wikiContent: Record<string, WikiArticle> = {
@@ -34,7 +36,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Альфа-волк (Ур. 16)",
         d: "Вожак стаи в логове волков. Ваша первая форма превращения.",
-        image: "/images/wiki/v-blood/alpha-wolf.webp",
+        image: "/images/wiki/v-blood/Act-I/alpha-wolf.webp",
         stats: {
           Регион: "Леса Фарбейн",
           Награда: "Форма волка",
@@ -45,7 +47,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Кили Ледяная Лучница (Ур. 20)",
         d: "Предводительница охотников. Открывает кожевенный станок.",
-        image: "/images/wiki/v-blood/Keelythefrostarcher.webp",
+        image: "/images/wiki/v-blood/Act-I/Keelythefrostarcher.webp",
         stats: {
           Регион: "Леса Фарбейн",
           Магия: "Мороз",
@@ -61,7 +63,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Эррол Каменолом (Ур. 20)",
         d: "Орудует тяжелым молотом в медных шахтах.",
-        image: "/images/wiki/v-blood/Erroltherockgnawer.webp",
+        image: "/images/wiki/v-blood/Act-I/Erroltherockgnawer.webp",
         stats: {
           Регион: "Медная шахта",
           Награда: "Большой сундук",
@@ -75,7 +77,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Руфус Бригадир (Ур. 20)",
         d: "Мастер плотник. Открывает арбалет и стол плотника.",
-        image: "/images/wiki/v-blood/Rufustheforeman.webp",
+        image: "/images/wiki/v-blood/Act-I/Rufustheforeman.webp",
         stats: {
           Регион: "Лагерь лесорубов",
           Награда: "Стол плотника",
@@ -91,7 +93,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Грейсон Оружейник (Ур. 27)",
         d: "Бывший капитан ополчения. Открывает точильный камень.",
-        image: "/images/wiki/v-blood/Graysonthearmourer.webp",
+        image: "/images/wiki/v-blood/Act-I/Graysonthearmourer.webp",
         stats: {
           Регион: "Арсенал бандитов",
           Награда: "Точильный камень",
@@ -106,7 +108,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Свиномор Опустошитель (Ур. 27)",
         d: "Осквернитель кладбищ, владеющий силой смерти.",
-        image: "/images/wiki/v-blood/Goreswinetheravanger.webp",
+        image: "/images/wiki/v-blood/Act-I/Goreswinetheravanger.webp",
         stats: {
           Регион: "Оскверненное кладбище",
           Магия: "Нечестивость",
@@ -122,7 +124,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Лидия Лучница Хаоса (Ур. 30)",
         d: "Патрулирует дороги. Открывает стол алхимика.",
-        image: "/images/wiki/v-blood/Lidiathechaosarcher.webp",
+        image: "/images/wiki/v-blood/Act-I/Lidiathechaosarcher.webp",
         stats: {
           Регион: "Дороги Фарбейна",
           Магия: "Хаос",
@@ -137,7 +139,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Клайв Поджигатель (Ур. 30)",
         d: "Безумный подрывник в серном карьере.",
-        image: "/images/wiki/v-blood/Clivetheblaster.webp",
+        image: "/images/wiki/v-blood/Act-I/Clivetheblaster.webp",
         stats: {
           Регион: "Серный карьер",
           Награда: "Взрывчатка",
@@ -153,14 +155,14 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Нибблс Гнилой Крыс (Ур. 30)",
         d: "Призывается через Гнездо Паразитов.",
-        image: "/images/wiki/v-blood/Nibblestherottenrat.webp",
+        image: "/images/wiki/v-blood/Act-I/Nibblestherottenrat.webp",
         stats: { Регион: "Замок", Награда: "Форма крысы", Тип: "Паразит" },
         unlocks: [{ name: "Форма крысы", category: "power" }],
       },
       {
         t: "Финн Рыбак (Ур. 32)",
         d: "Мастер рыбной ловли. Обитает у Озера Рыбаков.",
-        image: "/images/wiki/v-blood/Finnthefisherman.webp",
+        image: "/images/wiki/v-blood/Act-I/Finnthefisherman.webp",
         stats: { Регион: "Озеро Рыбаков", Награда: "Удочка", Тип: "Рыбак" },
         unlocks: [
           { name: "Удочка", category: "recipe" },
@@ -171,7 +173,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Полора Фейская Странница (Ур. 35)",
         d: "Связана с духами леса. Открывает телепортацию.",
-        image: "/images/wiki/v-blood/Polorathefeywanderer.webp",
+        image: "/images/wiki/v-blood/Act-I/Polorathefeywanderer.webp",
         stats: {
           Регион: "Сверкающие луга",
           Награда: "Вампирские врата",
@@ -187,7 +189,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Кодия Свирепый Медведь (Ур. 35)",
         d: "Огромный медведь в Медвежьей пещере.",
-        image: "/images/wiki/v-blood/Kodiathefiercebear.webp",
+        image: "/images/wiki/v-blood/Act-I/Kodiathefiercebear.webp",
         stats: {
           Регион: "Медвежья пещера",
           Награда: "Форма медведя",
@@ -198,7 +200,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Николаус Падший (Ур. 35)",
         d: "Некромант, призывающий армии мертвецов.",
-        image: "/images/wiki/v-blood/Nicholausthefallen.webp",
+        image: "/images/wiki/v-blood/Act-I/Nicholausthefallen.webp",
         stats: {
           Регион: "Забытое кладбище",
           Награда: "Стол кабинет",
@@ -213,7 +215,7 @@ export const wikiContent: Record<string, WikiArticle> = {
       {
         t: "Квинси Король Разбойников (Ур. 37)",
         d: "Лидер бандитов Фарбейна. Открывает путь к железу.",
-        image: "/images/wiki/v-blood/Quincytheroverbandrookking.webp",
+        image: "/images/wiki/v-blood/Act-I/Quincytheroverbandrookking.webp",
         stats: {
           Регион: "Крепость разбойников",
           Награда: "Железо",
@@ -228,121 +230,291 @@ export const wikiContent: Record<string, WikiArticle> = {
         ],
       },
 
-      // --- ACT II: DUNLEY FARMLANDS (Уровни 40 - 58) ---
+      // --- ACT II: DUNLEY FARMLANDS (Фермы Данли) ---
       {
-        t: "Беатриса Портниха (Ур. 40)",
-        d: "Старая женщина, знающая секреты ткани.",
+        t: "Швея Беатриса (Ур. 40)",
+        d: "Старая женщина, знающая секреты ткани. Прячется среди жителей деревни.",
+        image: "/images/wiki/v-blood/Act-II/Beatricethetailor.webp",
         stats: {
           Регион: "Деревня Рассвета",
           Награда: "Ткацкий станок",
           Форма: "Человек",
         },
+        unlocks: [
+          { name: "Очко заклинаний Крови (Т4)", category: "power" },
+          { name: "Ткацкий станок", category: "build" },
+          { name: "Плащ охотника", category: "recipe" },
+          { name: "Ткань и Хлопковая пряжа", category: "recipe" },
+          { name: "Ассортимент штор", category: "build" },
+        ],
       },
       {
-        t: "Винсент Морозоносец (Ур. 44)",
-        d: "Капитан стражи Данли. Открывает тюрьмы.",
+        t: "Винсент Повелитель Мороза (Ур. 44)",
+        d: "Капитан стражи Данли. Замораживает врагов своим ледяным щитом.",
+        image: "/images/wiki/v-blood/Act-II/Vincentthefrostbringer.webp",
         stats: {
           Регион: "Лагерь ополчения",
           Магия: "Мороз",
           Награда: "Тюремная камера",
         },
+        unlocks: [
+          { name: "Очко заклинаний Мороза (Т4)", category: "power" },
+          { name: "Тюремная камера", category: "build" },
+          { name: "Укрепленная доска", category: "recipe" },
+          { name: "Тюремные решетки", category: "build" },
+        ],
       },
       {
         t: "Кристина Жрица Солнца (Ур. 44)",
-        d: "Служительница Церкви Света. Открывает стекло.",
+        d: "Служительница Света, патрулирующая храмы Данли.",
+        image: "/images/wiki/v-blood/Act-II/Christinathesunpriestess.webp",
         stats: { Регион: "Деревня Моссвик", Награда: "Стекло", Магия: "Свет" },
+        unlocks: [
+          { name: "Очко заклинаний Иллюзии (Т2)", category: "power" },
+          { name: "Шерстяная и Серебряная нити", category: "recipe" },
+          { name: "Сумка с серебром (+10 слотов)", category: "recipe" },
+          { name: "Свечи (декор)", category: "build" },
+        ],
       },
       {
         t: "Тристан Охотник на вампиров (Ур. 44)",
-        d: "Легендарный охотник, патрулирует Фарбейн.",
+        d: "Опасный воин, поклявшийся истребить ваш род. Обитает в лесах Фарбейн.",
+        image: "/images/wiki/v-blood/Act-II/Tristanthevampirehunter.webp",
         stats: {
           Регион: "Вардоран",
           Награда: "Сущность крови",
           Тип: "Охотник",
         },
+        unlocks: [
+          { name: "Очко заклинаний Крови (Т3)", category: "power" },
+          { name: "Жажда крови (Поиск крови)", category: "power" },
+          { name: "Великая сущность крови", category: "recipe" },
+          { name: "Великий меч", category: "recipe" },
+        ],
       },
       {
         t: "Сэр Эрвин Смелый Кавалер (Ур. 46)",
-        d: "Элитный рыцарь на Ипподроме.",
+        d: "Мастер верхового боя, охраняющий Ипподром.",
+        image: "/images/wiki/v-blood/Act-II/SirErwinthegallantcavalier.webp",
         stats: { Регион: "Ипподром Данли", Награда: "Седло", Тип: "Рыцарь" },
+        unlocks: [
+          { name: "Очко заклинаний Бури (Т1)", category: "power" },
+          { name: "Стойла", category: "build" },
+          { name: "Седло", category: "recipe" },
+        ],
       },
       {
         t: "Крииг Генерал Нежити (Ур. 47)",
-        d: "Командует мертвецами в Железных копях.",
-        stats: { Регион: "Проклятые копи", Награда: "Сталь", Тип: "Нежить" },
+        d: "Командует проклятыми в глубинах железных копей.",
+        image: "/images/wiki/v-blood/Act-II/Kriigtheundeadgeneral.webp",
+        stats: { Регион: "Железные копи", Награда: "Сталь", Тип: "Нежить" },
+        unlocks: [
+          { name: "Очко заклинаний Нечестивости (Т2)", category: "power" },
+          { name: "Коса (Рипер)", category: "recipe" },
+          { name: "Скелет-маг", category: "recipe" },
+          { name: "Дверные колокольчики", category: "build" },
+        ],
       },
       {
         t: "Леандра Жрица Теней (Ур. 47)",
-        d: "Повелительница иллюзий в Церкви Проклятых.",
+        d: "Повелительница иллюзий и создательница артефактов.",
+        image: "/images/wiki/v-blood/Act-II/Leandratheshadowpriestess.webp",
         stats: {
           Регион: "Церковь Проклятых",
           Награда: "Стол ювелира",
           Магия: "Иллюзия",
         },
+        unlocks: [
+          { name: "Очко заклинаний Нечестивости (Т1)", category: "power" },
+          { name: "Стол ремесленника", category: "build" },
+          { name: "Точильный камень и Камень бича", category: "recipe" },
+          { name: "Призыватель сумерек", category: "recipe" },
+        ],
       },
       {
         t: "Майя Темный Ученый (Ур. 47)",
-        d: "Хранительница знаний в Запретной башне.",
+        d: "Хранительница запретных свитков в восточной башне.",
+        image: "/images/wiki/v-blood/Act-II/Majathedarksavant.webp",
         stats: {
           Регион: "Запретная башня",
           Награда: "Стол библиотека",
           Магия: "Иллюзия",
         },
+        unlocks: [
+          { name: "Очко заклинаний Иллюзии (Т1)", category: "power" },
+          { name: "Стол исследований (Study)", category: "build" },
+          { name: "Свиток", category: "recipe" },
+          { name: "Благородный костюм", category: "recipe" },
+        ],
       },
       {
         t: "Бейн Теневой Клинок (Ур. 50)",
-        d: "Неуловимый убийца, скрывающийся среди людей.",
+        d: "Скрытный убийца, способный принимать облик человека.",
+        image: "/images/wiki/v-blood/Act-II/Banetheshadowblade.webp",
         stats: {
           Регион: "Дороги Данли",
           Награда: "Человеческая форма",
           Тип: "Убийца",
         },
+        unlocks: [
+          { name: "Очко заклинаний Нечестивости (Т4)", category: "power" },
+          { name: "Человеческая форма", category: "power" },
+          { name: "Кинжалы", category: "recipe" },
+        ],
       },
       {
         t: "Гретель Стеклодув (Ур. 50)",
-        d: "Мастер стекольного дела в Кварцевом карьере.",
+        d: "Мастер, управляющая силой молний в кварцевом карьере.",
+        image: "/images/wiki/v-blood/Act-II/Gretheltheglassblower.webp",
         stats: {
           Регион: "Кварцевый карьер",
           Награда: "Стеклянная посуда",
           Тип: "Мастер",
         },
+        unlocks: [
+          { name: "Очко заклинаний Бури (Т1)", category: "power" },
+          { name: "Стекло", category: "recipe" },
+          { name: "Зелье Кровавой розы", category: "recipe" },
+          { name: "Настенные зеркала", category: "recipe" },
+        ],
       },
       {
         t: "Мередит Лучезарная Лучница (Ур. 50)",
-        d: "Боевой командир в Железных копях.",
+        d: "Командир сил Света, сражающаяся с нежитью в шахтах.",
+        image: "/images/wiki/v-blood/Act-II/Merediththebrightarcher.webp",
         stats: { Регион: "Железные копи", Награда: "Шерсть", Магия: "Свет" },
+        unlocks: [
+          { name: "Очко заклинаний Бури (Т4)", category: "power" },
+          { name: "Зелье сопротивления Святости", category: "recipe" },
+          { name: "Эликсир бродяги", category: "recipe" },
+        ],
       },
       {
         t: "Тера Геомант (Ур. 53)",
-        d: "Управляет камнями и големами.",
+        d: "Управляет силой земли и способна призывать големов.",
+        image: "/images/wiki/v-blood/Act-II/Terahthegeomancer.webp",
         stats: {
           Регион: "Проход Бедрок",
           Награда: "Осадный камень",
           Тип: "Маг",
         },
+        unlocks: [
+          { name: "Очко заклинаний Иллюзии (Т3)", category: "power" },
+          { name: "Стол огранки камней", category: "build" },
+          { name: "Камень осадного голема", category: "recipe" },
+          { name: "Обсидиан", category: "recipe" },
+        ],
       },
       {
-        t: "Фростмау Горный Ужас (Ур. 53)",
-        d: "Древнее чудовище Святых гор.",
+        t: "Морозуб Морозный Ужас (Ур. 53)",
+        d: "Древнее чудовище, патрулирующее заснеженные тропы.",
+        image: "/images/wiki/v-blood/Act-II/Frostmawthemountainterror.webp",
         stats: {
           Регион: "Святые горы",
           Награда: "Призрачная эссенция",
           Магия: "Мороз",
         },
+        unlocks: [
+          { name: "Очко заклинаний Мороза (Т3)", category: "power" },
+          { name: "Толстая кожа", category: "recipe" },
+          { name: "Когти", category: "recipe" },
+          { name: "Горная сумка (+12 слотов)", category: "recipe" },
+        ],
+      },
+      {
+        t: "Генерал Елена Бесстрастная (Ур. 53)",
+        d: "Командир проклятых легионов в руинах Мортиума.",
+        image: "/images/wiki/v-blood/Act-II/Generalelenathehollow.webp",
+        stats: {
+          Регион: "Руины Мортиума",
+          Награда: "Алтарь Стигии",
+          Тип: "Нежить",
+        },
+        unlocks: [
+          { name: "Очко заклинаний Мороза (Т2)", category: "power" },
+          { name: "Ячейка пассивной способности", category: "power" },
+          { name: "Алтарь пробуждения Стигии", category: "build" },
+          { name: "Эликсир Ворона", category: "recipe" },
+        ],
+      },
+      {
+        t: "Гай Каменный Чемпион (Ур. 55)",
+        d: "Гладиатор на арене Колизея. Ждет достойного вызова.",
+        image: "/images/wiki/v-blood/Act-II/Gaiusthecursedchampion.webp",
+        stats: {
+          Регион: "Колизей Данли",
+          Награда: "Парные клинки",
+          Тип: "Воин",
+        },
+        unlocks: [
+          { name: "Очко заклинаний Нечестивости (Т1)", category: "power" },
+          { name: "Арена-станция", category: "build" },
+          { name: "Парные клинки (Twinblades)", category: "recipe" },
+        ],
+      },
+      {
+        t: "Генерал Кассий Предатель (Ур. 57)",
+        d: "Могущественный падший генерал в землях Мортиума.",
+        image: "/images/wiki/v-blood/Act-II/Generalcassiusthebetrayer.webp",
+        stats: {
+          Регион: "Руины Мортиума",
+          Награда: "Круг призыва",
+          Тип: "Нежить",
+        },
+        unlocks: [
+          { name: "Очко заклинаний Нечестивости (Т2)", category: "power" },
+          { name: "Ячейка пассивной способности", category: "power" },
+          { name: "Круг призыва Стигии", category: "build" },
+          { name: "Эликсир Летучей мыши", category: "recipe" },
+        ],
+      },
+      {
+        t: "Джейд Охотница на вампиров (Ур. 57)",
+        d: "Мастер огнестрельного оружия. Ее пули пропитаны тишиной.",
+        image: "/images/wiki/v-blood/Act-II/Jadethevampirehunter.webp",
+        stats: { Регион: "Фермы Данли", Награда: "Пистолеты", Тип: "Охотник" },
+        unlocks: [
+          { name: "Очко заклинаний Хаоса (Т4)", category: "power" },
+          { name: "Пистолеты", category: "recipe" },
+          { name: "Первобытная сущность крови", category: "recipe" },
+          { name: "Продвинутый кровавый пресс", category: "build" },
+        ],
+      },
+      {
+        t: "Разиэль Пастырь (Ур. 57)",
+        d: "Лидер культа в Монастыре. Требует защиты от святости.",
+        image: "/images/wiki/v-blood/Act-II/Razieltheshepherd.webp",
+        stats: {
+          Регион: "Монастырь Данли",
+          Награда: "Ювелирный стол",
+          Магия: "Свет",
+        },
+        unlocks: [
+          { name: "Очко заклинаний Крови (Т2)", category: "power" },
+          { name: "Ювелирный стол", category: "build" },
+          { name: "Серебряные слитки", category: "recipe" },
+        ],
       },
       {
         t: "Октавиан Капитан Ополчения (Ур. 58)",
-        d: "Лидер сил Данли. Открывает Темное Серебро.",
+        d: "Финальный босс Акта. Хранитель секретов ковки Темного серебра.",
+        image: "/images/wiki/v-blood/Act-II/Octavianthemilitiacaptain.webp",
         stats: {
           Регион: "Бастион Данли",
           Награда: "Темное серебро",
           Тип: "Босс Акта",
         },
+        unlocks: [
+          { name: "Очко заклинаний Бури (Т3)", category: "power" },
+          { name: "Кузня предков (Ancestral Forge)", category: "build" },
+          { name: "Хранилище снаряжения", category: "build" },
+          { name: "Слитки темного серебра", category: "recipe" },
+        ],
       },
 
       // --- ACT III: GLOOMROT & CURSED FOREST (Уровни 60 - 65) ---
       {
-        t: "Зива Инженер (Ур. 60)",
+        t: "Инженер Зива (Ур. 60)",
         d: "Безумный изобретатель с огнеметом.",
         stats: { Регион: "Глоурот Юг", Награда: "Технологии", Тип: "Инженер" },
       },

@@ -4,31 +4,28 @@ import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import {
   Search,
-  ChevronRight,
   Zap,
   Sword,
-  Droplets,
-  Globe,
   Layers,
   Shield,
   Skull,
+  Map,
   Hammer,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-// --- ТИПИЗАЦИЯ ДАННЫХ ---
 interface WikiCategory {
   id: string;
-  title: string;
   slug: string;
-  icon: React.ReactNode; // Поддержка Lucide иконок
-  count: string;
+  title: string;
   description: string;
+  count: string;
   tags: string[];
+  icon: React.ReactNode;
+  externalLink?: string;
 }
 
-// --- МАССИВ ДАННЫХ (На основе V Rising Wiki) ---
 const wikiCategories: WikiCategory[] = [
   {
     id: "V-Кровь",
@@ -39,6 +36,16 @@ const wikiCategories: WikiCategory[] = [
     description:
       "Полное досье на боссов Вардорана: способности, тактики и открываемые технологии.",
     tags: ["Боссы", "Способности", "Прогрессия", "Охота"],
+  },
+  {
+    id: "Крафт",
+    title: "Крафтинг и Рецепты",
+    slug: "crafting",
+    icon: <Hammer className="w-6 h-6" />,
+    count: "15+ Станков",
+    description:
+      "Алхимия, кузнечное дело и обработка материалов. Полный перечень рецептов для создания снаряжения и расходников.",
+    tags: ["Верстаки", "Рецепты", "Алхимия", "Переработка"],
   },
   {
     id: "Ресурсы",
@@ -186,47 +193,70 @@ export default function WikiPage() {
 
           {/* СЕТКА КАТЕГОРИЙ */}
           <div className="lg:col-span-3 grid grid-cols-2 gap-6">
-            {filteredArticles.map((cat, i) => (
-              <Link
-                href={`/wiki/${cat.slug}`}
-                key={cat.id}
-                className="group relative bg-[#080808]/40 border border-white/5 p-8 md:p-10 transition-all duration-500 hover:border-primary/40 flex flex-col md:flex-row gap-10 items-center slide-in-from-bottom-5"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
-                <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary opacity-0 group-hover:opacity-100 transition-all" />
-                <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary opacity-0 group-hover:opacity-100 transition-all" />
+            {filteredArticles.map((cat, i) => {
+              // Общие стили для обоих типов ссылок
+              const cardStyles =
+                "group relative bg-[#080808]/40 border border-white/5 p-8 md:p-10 transition-all duration-500 hover:border-primary/40 flex flex-col md:flex-row gap-10 items-center slide-in-from-bottom-5";
+              const animationStyle = { animationDelay: `${i * 100}ms` };
 
-                {/* Текстовый блок */}
-                <div className="flex-grow space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-primary font-bold tracking-widest uppercase">
-                      Node::{cat.id}
-                    </span>
-                    <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">
-                      {cat.count}
-                    </span>
-                  </div>
-                  <h2 className="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter group-hover:text-primary transition-colors">
-                    {cat.title}
-                  </h2>
-                  <p className="text-white/40 text-sm italic font-light leading-relaxed max-w-xl group-hover:text-white/70 transition-colors">
-                    {cat.description}
-                  </p>
+              // Содержимое карточки (вынесено, чтобы не дублировать код)
+              const CardInner = (
+                <>
+                  <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary opacity-0 group-hover:opacity-100 transition-all" />
+                  <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary opacity-0 group-hover:opacity-100 transition-all" />
 
-                  {/* Теги */}
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {cat.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[9px] font-bold uppercase tracking-widest px-3 py-1 bg-white/[0.03] border border-white/5 text-white/20 group-hover:text-primary/80 group-hover:border-primary/20 transition-all"
-                      >
-                        #{tag}
+                  <div className="flex-grow space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-primary font-bold tracking-widest uppercase">
+                        Node::{cat.id}
                       </span>
-                    ))}
+                      <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">
+                        {cat.count}
+                      </span>
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter group-hover:text-primary transition-colors">
+                      {cat.title}
+                    </h2>
+                    <p className="text-white/40 text-sm italic font-light leading-relaxed max-w-xl group-hover:text-white/70 transition-colors">
+                      {cat.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {cat.tags?.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[9px] font-bold uppercase tracking-widest px-3 py-1 bg-white/[0.03] border border-white/5 text-white/20 group-hover:text-primary/80 group-hover:border-primary/20 transition-all"
+                        >
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </>
+              );
+
+              // УСЛОВНЫЙ РЕНДЕР: Внешняя ссылка или Внутренняя
+              return cat.externalLink ? (
+                <Link
+                  href={cat.externalLink}
+                  rel="noopener noreferrer"
+                  key={cat.id}
+                  className={cardStyles}
+                  style={animationStyle}
+                >
+                  {CardInner}
+                </Link>
+              ) : (
+                <Link
+                  href={`/wiki/${cat.slug}`}
+                  key={cat.id}
+                  className={cardStyles}
+                  style={animationStyle}
+                >
+                  {CardInner}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
