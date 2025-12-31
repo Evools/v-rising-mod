@@ -3,7 +3,7 @@ import Link from "next/link";
 
 function Footer() {
   return (
-    <footer className="pt-32 pb-16 border-t-2 border-primary/20 bg-[#070708] relative">
+    <footer className="pt-32 pb-16 border-t-2 border-primary/20 bg-[#070708] relative z-10">
       <div className="absolute top-0 left-0 w-full h-px bg-white/5" />
 
       <div className="container mx-auto px-4">

@@ -29,7 +29,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // 1. Принудительно ставим dark в className и стиль color-scheme
     <html
       lang="ru"
       className={`${inter.variable} dark`}
