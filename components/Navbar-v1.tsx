@@ -187,7 +187,7 @@ export default function Navbar() {
                 asChild
                 className="bg-primary text-white hover:bg-white hover:text-black transition-all px-10 text-[10px] uppercase tracking-[0.4em] font-black h-12 shadow-[4px_4px_0px_rgba(220,38,38,0.3)] active:translate-y-[2px]"
               >
-                <Link href="https://discord.gg/your-link">Дискорд</Link>
+                <a href="https://discord.gg/N5nwUBqJKc">Дискорд</a>
               </Button>
             </div>
           )}
@@ -231,9 +231,12 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-            <Button className="w-full h-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.5em]">
+            <a
+              href="https://discord.gg/N5nwUBqJKc"
+              className="w-full h-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.5em]"
+            >
               Discord Server
-            </Button>
+            </a>
           </div>
         </div>
       )}

@@ -104,7 +104,7 @@ export default function Hero() {
             variant="outline"
             className="h-20 px-16 border border-white/10 bg-transparent text-white hover:bg-white/5 transition-all duration-300 text-[11px] font-black uppercase tracking-[0.4em] backdrop-blur-md"
           >
-            <Link href="https://discord.gg/your-link">Вступить в совет</Link>
+            <Link href="https://discord.gg/N5nwUBqJKc">Вступить в совет</Link>
           </Button>
         </div>
       </div>

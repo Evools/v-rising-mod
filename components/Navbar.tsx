@@ -149,7 +149,7 @@ export default function Navbar() {
               asChild
               className="bg-primary text-white hover:bg-white hover:text-black transition-all px-8 text-[10px] uppercase tracking-[0.4em] font-black h-11 shadow-[4px_4px_0px_rgba(220,38,38,0.3)]"
             >
-              <Link href="https://discord.gg/your-link">Discord</Link>
+              <Link href="https://discord.gg/N5nwUBqJKc">Discord</Link>
             </Button>
           </div>
 

@@ -20,12 +20,12 @@ function Footer() {
               крови.
             </p>
             <div className="flex gap-1">
-              <Link
-                href="#"
+              <a
+                href="https://discord.gg/N5nwUBqJKc"
                 className="p-4 border border-white/5 hover:bg-primary hover:text-white transition-all"
               >
                 <Discord className="w-5 h-5" />
-              </Link>
+              </a>
               <Link
                 href="#"
                 className="p-4 border border-white/5 hover:bg-primary hover:text-white transition-all"

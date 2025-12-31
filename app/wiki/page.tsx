@@ -235,7 +235,6 @@ export default function WikiPage() {
                 </>
               );
 
-              // УСЛОВНЫЙ РЕНДЕР: Внешняя ссылка или Внутренняя
               return cat.externalLink ? (
                 <Link
                   href={cat.externalLink}
