@@ -43,7 +43,7 @@ export default function SupportPage() {
             <span className="text-white">#help-center</span>.
           </p>
           <a
-            href="https://discord.gg/N5nwUBqJKc"
+            href="https://discord.gg/FbUVUChMm8"
             target="_blank"
             className="block w-full h-20 flex items-center justify-center bg-primary text-white font-black uppercase tracking-[0.5em] hover:bg-white hover:text-black transition-all text-xs"
           >

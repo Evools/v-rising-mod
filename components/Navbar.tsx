@@ -149,7 +149,9 @@ export default function Navbar() {
               asChild
               className="bg-primary text-white hover:bg-white hover:text-black transition-all px-8 text-[10px] uppercase tracking-[0.4em] font-black h-11 shadow-[4px_4px_0px_rgba(220,38,38,0.3)]"
             >
-              <Link href="https://discord.gg/N5nwUBqJKc">Discord</Link>
+              <a target="_blank" href="https://discord.gg/FbUVUChMm8">
+                Discord
+              </a>
             </Button>
           </div>
 
@@ -210,7 +212,9 @@ export default function Navbar() {
               asChild
               className="mt-8 w-full h-16 bg-primary text-white text-[10px] font-black uppercase tracking-[0.5em] shadow-[6px_6px_0px_rgba(220,38,38,0.2)]"
             >
-              <Link href="https://discord.gg/your-link">Join Community</Link>
+              <a target="_blank" href="https://discord.gg/FbUVUChMm8">
+                Join Community
+              </a>
             </Button>
           </div>
         </div>

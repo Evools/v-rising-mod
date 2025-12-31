@@ -21,7 +21,8 @@ function Footer() {
             </p>
             <div className="flex gap-1">
               <a
-                href="https://discord.gg/N5nwUBqJKc"
+                href="https://discord.gg/FbUVUChMm8"
+                target="_blank"
                 className="p-4 border border-white/5 hover:bg-primary hover:text-white transition-all"
               >
                 <Discord className="w-5 h-5" />
