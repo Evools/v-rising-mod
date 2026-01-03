@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   BookOpen,
   Check,
+  ChevronDown,
   ChevronRight,
   Crown,
   Droplets,
@@ -94,6 +95,7 @@ function CommandsContent() {
   const [search, setSearch] = useState("");
   const [copiedCmd, setCopiedCmd] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("Все");
+  const [isOpen, setIsOpen] = useState(false);
 
   const categories = [
     "Все",
@@ -105,6 +107,9 @@ function CommandsContent() {
     "Фамильяры",
     "Логистика",
     "Мир",
+    "Телепортация",
+    "Информация",
+    "Уведомления",
   ];
 
   const filtered = useMemo(() => {
@@ -173,31 +178,84 @@ function CommandsContent() {
         {/* STICKY SEARCH BOX */}
         <div className="sticky top-20 z-[100] mb-12 -mx-2 px-2 py-4 bg-[#050505]/95 backdrop-blur-md border-b border-white/5">
           <div className="bg-[#080808] border border-white/10 p-1 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
-            <div className="flex flex-col lg:flex-row">
+            <div className="flex flex-col lg:flex-row h-16 relative">
+              {/* ЛЕВАЯ ЧАСТЬ: ПОИСК */}
               <div className="relative flex-1 border-r border-white/5">
                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
-                <Input
+                <input
                   placeholder="ПОИСК ДИРЕКТИВЫ..."
-                  className="rounded-none pl-16 border-none bg-transparent text-white focus-visible:ring-0 h-16 text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/20"
+                  className="w-full h-full rounded-none pl-16 bg-transparent text-white focus:outline-none text-[10px] font-black uppercase tracking-[0.2em] placeholder:text-white/20"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <div className="flex flex-wrap bg-white/[0.02]">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setActiveTab(cat)}
-                    className={cn(
-                      "px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] transition-all border-r border-white/5",
-                      activeTab === cat
-                        ? "bg-primary text-white"
-                        : "text-slate-500 hover:text-white hover:bg-white/5"
-                    )}
-                  >
-                    {cat}
-                  </button>
-                ))}
+
+              {/* ПРАВАЯ ЧАСТЬ: CUSTOM DROPDOWN */}
+              <div className="relative lg:w-72 bg-white/[0.02]">
+                <button
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="w-full h-14 lg:h-full flex items-center justify-between px-6 lg:px-8 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all hover:bg-white/5 group border-t lg:border-t-0 border-white/5"
+                >
+                  <div className="flex flex-col items-start text-left">
+                    <span className="text-[6px] lg:text-[7px] text-primary leading-none mb-1 lg:mb-1.5 opacity-70 tracking-widest">
+                      ФИЛЬТР_ГРУППЫ
+                    </span>
+                    <span className="truncate max-w-[160px] sm:max-w-none">
+                      {activeTab || "ВСЕ КАТЕГОРИИ"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {/* Дополнительный индикатор для мобайла, что это выбор */}
+                    <span className="lg:hidden text-[8px] text-white/20 uppercase">
+                      ИЗМЕНИТЬ
+                    </span>
+                    <ChevronDown
+                      className={cn(
+                        "h-4 w-4 text-primary transition-transform duration-300",
+                        isOpen ? "rotate-180" : "rotate-0"
+                      )}
+                    />
+                  </div>
+                </button>
+
+                {/* ВЫПАДАЮЩЕЕ МЕНЮ (Плавающее поверх) */}
+                {isOpen && (
+                  <>
+                    {/* Оверлей для закрытия кликом по любой области */}
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setIsOpen(false)}
+                    />
+
+                    <div className="absolute top-[calc(100%+8px)] right-0 w-full bg-[#080808] border border-white/10 p-1 shadow-[0_30px_60px_rgba(0,0,0,1)] z-20 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <div className="max-h-64 overflow-y-auto no-scrollbar">
+                        {categories.map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => {
+                              setActiveTab(cat);
+                              setIsOpen(false);
+                            }}
+                            className={cn(
+                              "w-full flex items-center justify-between px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] transition-all border-b border-white/[0.03] last:border-none",
+                              activeTab === cat
+                                ? "bg-primary text-white"
+                                : "text-slate-400 hover:bg-white/5 hover:text-white"
+                            )}
+                          >
+                            {cat}
+                            {activeTab === cat && (
+                              <div className="w-1.5 h-1.5 bg-white rotate-45" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Декоративная полоска (всегда внизу кнопки) */}
+                <div className="absolute bottom-0 left-0 w-full h-[2px] bg-primary/30" />
               </div>
             </div>
           </div>
