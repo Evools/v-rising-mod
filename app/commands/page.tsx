@@ -80,6 +80,21 @@ const getGroupStyle = (group: string) => {
       border: "border-purple-400/20",
       icon: <Globe className="w-4 h-4" />,
     },
+    Телепортация: {
+      color: "text-teal-400",
+      border: "border-teal-400/20",
+      icon: <Crown className="w-4 h-4" />,
+    },
+    Информация: {
+      color: "text-sky-400",
+      border: "border-sky-400/20",
+      icon: <Terminal className="w-4 h-4" />,
+    },
+    Уведомления: {
+      color: "text-pink-400",
+      border: "border-pink-400/20",
+      icon: <AlertTriangle className="w-4 h-4" />,
+    },
   };
   return (
     styles[group] || {
