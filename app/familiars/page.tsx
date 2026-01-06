@@ -379,7 +379,7 @@ export default function FamiliarsPage() {
         </section>
 
         {/* BOSSES TABLE */}
-        <div className="space-y-8">
+        {/* <div className="space-y-8">
           <div className="flex items-end justify-between border-b-2 border-primary/20 pb-6">
             <h2 className="font-serif text-3xl uppercase tracking-tighter italic">
               Реестр <span className="text-primary">Сущностей</span>
@@ -446,7 +446,7 @@ export default function FamiliarsPage() {
               </table>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <style jsx global>{`
