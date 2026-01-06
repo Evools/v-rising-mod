@@ -212,7 +212,7 @@ export default function FamiliarsPage() {
         </div>
 
         {/* INFO CARDS (HUD STYLE) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10 mb-24 shadow-2xl">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10 mb-24 shadow-2xl">
           <div className="p-10 bg-[#08080a]/80 backdrop-blur-sm flex gap-6 items-start hover:bg-white/[0.03] transition-colors">
             <Crosshair className="text-primary w-6 h-6 shrink-0" />
             <div>
@@ -254,7 +254,7 @@ export default function FamiliarsPage() {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <section className="mb-32 space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
