@@ -1,17 +1,24 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import {
+  CheckCircle2,
+  ChevronDown,
   Crosshair,
   Dna,
   Flame,
   Ghost,
   Info,
+  Search,
   ShieldAlert,
   Skull,
   Star,
+  Terminal,
+  Trash2,
+  Zap,
 } from "lucide-react";
 import Image from "next/image";
-import { useSyncExternalStore } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 
 const subscribe = () => () => {};
 const useIsClient = () =>
@@ -20,6 +27,84 @@ const useIsClient = () =>
     () => true,
     () => false
   );
+
+// --- ДАННЫЕ (Команды лучше импортировать из файла, здесь для примера) ---
+const familiarCommands = [
+  {
+    group: "Управление",
+    cmd: ".fam l",
+    desc: "Список всех разблокированных фамильяров в текущей коробке",
+    shortcut: ".fam list",
+  },
+  {
+    group: "Управление",
+    cmd: ".fam b [#]",
+    desc: "Активировать (призвать) фамильяра из списка по его номеру",
+    shortcut: ".fam bind",
+  },
+  {
+    group: "Управление",
+    cmd: ".fam t",
+    desc: "Призвать или отозвать текущего активного фамильяра",
+    shortcut: ".fam toggle",
+  },
+  {
+    group: "Развитие",
+    cmd: ".fam pr",
+    desc: "Провести ритуал престижа для усиления базовых статов",
+    shortcut: ".fam prestige",
+  },
+  {
+    group: "Развитие",
+    cmd: ".fam gl",
+    desc: "Показать текущий уровень и подробные характеристики",
+    shortcut: ".fam getlevel",
+  },
+  {
+    group: "Развитие",
+    cmd: ".fam shiny [School]",
+    desc: "Сделать фамильяра сияющим (эффект школы магии)",
+    shortcut: ".fam shinybuff",
+  },
+  {
+    group: "Коробки",
+    cmd: ".fam boxes",
+    desc: "Просмотреть список всех ваших коробок для хранения",
+    shortcut: ".fam listboxes",
+  },
+  {
+    group: "Коробки",
+    cmd: ".fam ab [Name]",
+    desc: "Создать новую пустую коробку с указанным именем",
+    shortcut: ".fam addbox",
+  },
+  {
+    group: "Бой",
+    cmd: ".fam c",
+    desc: "Вкл/Выкл режим участия фамильяра в бою",
+    shortcut: ".fam togglecombat",
+  },
+  {
+    group: "Бой",
+    cmd: ".fam bgs",
+    desc: "Просмотреть список ваших боевых групп",
+    shortcut: ".fam listbattlegroups",
+  },
+  {
+    group: "Опасные",
+    cmd: ".fam r [#]",
+    desc: "Навсегда удалить фамильяра из вашего списка",
+    shortcut: ".fam remove",
+    danger: true,
+  },
+  {
+    group: "Опасные",
+    cmd: ".fam reset",
+    desc: "Экстренный сброс данных активных сущностей",
+    shortcut: ".fam reset",
+    danger: true,
+  },
+];
 
 const bosses = [
   {
@@ -47,6 +132,31 @@ const bosses = [
 
 export default function FamiliarsPage() {
   const isClient = useIsClient();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeGroup, setActiveGroup] = useState("Все");
+  const [copiedCmd, setCopiedCmd] = useState<string | null>(null);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+
+  const groups = [
+    "Все",
+    ...Array.from(new Set(familiarCommands.map((c) => c.group))),
+  ];
+
+  const filteredCommands = useMemo(() => {
+    return familiarCommands.filter((c) => {
+      const matchesSearch =
+        c.cmd.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.desc.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesGroup = activeGroup === "Все" || c.group === activeGroup;
+      return matchesSearch && matchesGroup;
+    });
+  }, [searchQuery, activeGroup]);
+
+  const handleCopy = (cmd: string) => {
+    navigator.clipboard.writeText(cmd);
+    setCopiedCmd(cmd);
+    setTimeout(() => setCopiedCmd(null), 2000);
+  };
 
   if (!isClient) return <div className="min-h-screen bg-[#050507]" />;
 
@@ -146,6 +256,128 @@ export default function FamiliarsPage() {
           </div>
         </div>
 
+        <section className="mb-32 space-y-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-8">
+            <div>
+              <h2 className="font-serif text-3xl uppercase italic tracking-tighter">
+                Терминал <span className="text-red-500">Команд</span>
+              </h2>
+              <p className="text-white/30 text-[10px] uppercase tracking-widest mt-2">
+                Нажмите на команду для копирования
+              </p>
+            </div>
+
+            {/* Поиск и Фильтр */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* SEARCH INPUT */}
+              <div className="relative group">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-red-500 transition-colors" />
+                <input
+                  type="text"
+                  placeholder="ПОИСК КОМАНДЫ..."
+                  className="bg-white/5 border border-white/10 pl-10 pr-4 py-2 text-[10px] font-black tracking-widest uppercase focus:outline-none focus:border-red-500/50 w-full sm:w-64 transition-all"
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              {/* CUSTOM SELECT */}
+              <div className="relative w-full sm:w-56">
+                <button
+                  onClick={() => setIsSelectOpen(!isSelectOpen)}
+                  className="w-full bg-white/5 border border-white/10 px-4 py-2 text-[10px] font-black tracking-[0.2em] uppercase flex items-center justify-between hover:bg-white/10 transition-all focus:border-red-500/50"
+                >
+                  <span className="text-white/40">Группа: </span>
+                  <span className="text-white">{activeGroup}</span>
+                  <div
+                    className={cn(
+                      "ml-2 transition-transform duration-300",
+                      isSelectOpen ? "rotate-180" : ""
+                    )}
+                  >
+                    <ChevronDown size={14} className="text-red-500" />
+                  </div>
+                </button>
+
+                {/* DROPDOWN MENU */}
+                {isSelectOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-40"
+                      onClick={() => setIsSelectOpen(false)}
+                    />
+
+                    <div className="absolute top-full left-0 w-full mt-1 bg-[#0a0a0c] border border-white/10 z-50 py-1 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-200">
+                      {groups.map((g) => (
+                        <button
+                          key={g}
+                          className={cn(
+                            "w-full text-left px-4 py-2 text-[9px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all",
+                            activeGroup === g
+                              ? "text-red-500 bg-white/5"
+                              : "text-white/40"
+                          )}
+                          onClick={() => {
+                            setActiveGroup(g);
+                            setIsSelectOpen(false);
+                          }}
+                        >
+                          {g}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {filteredCommands.map((c, i) => (
+              <div
+                key={i}
+                onClick={() => handleCopy(c.cmd)}
+                className={cn(
+                  "relative p-5 bg-[#08080a] border border-white/5 hover:border-red-500/30 cursor-pointer transition-all group overflow-hidden",
+                  c.danger && "hover:border-red-500"
+                )}
+              >
+                <div className="flex justify-between items-start relative z-10">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3">
+                      <code
+                        className={cn(
+                          "text-lg font-black tracking-tighter",
+                          c.danger ? "text-red-500" : "text-red-500"
+                        )}
+                      >
+                        {c.cmd}
+                      </code>
+                      {copiedCmd === c.cmd && (
+                        <CheckCircle2 className="w-4 h-4 text-green-500 animate-in zoom-in" />
+                      )}
+                    </div>
+                    <p className="text-xs text-white/40 italic font-medium group-hover:text-white/70 transition-colors">
+                      {c.desc}
+                    </p>
+                  </div>
+                  <div className="text-[8px] font-black uppercase tracking-[0.2em] text-white/10 group-hover:text-red-500/40 transition-colors">
+                    {c.shortcut}
+                  </div>
+                </div>
+                {/* Декоративная вспышка при копировании */}
+                {copiedCmd === c.cmd && (
+                  <div className="absolute inset-0 bg-red-500/10 animate-pulse" />
+                )}
+                {c.danger && (
+                  <div className="absolute top-0 right-0 p-1">
+                    <Trash2 size={10} className="text-red-500/20" />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* BOSSES TABLE */}
         <div className="space-y-8">
           <div className="flex items-end justify-between border-b-2 border-primary/20 pb-6">
@@ -212,39 +444,6 @@ export default function FamiliarsPage() {
                   ))}
                 </tbody>
               </table>
-            </div>
-          </div>
-        </div>
-
-        {/* FOOTER BLOCK (Terminal) */}
-        <div className="mt-16 p-px bg-white/10 shadow-2xl">
-          <div className="p-12 bg-[#050507] flex flex-col md:flex-row justify-between items-center gap-12">
-            <div className="flex items-center gap-6">
-              <div className="p-4 bg-primary/10 border border-primary/20">
-                <Info className="w-6 h-6 text-primary" />
-              </div>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-white/40 font-black leading-relaxed">
-                Полная техническая справка: <br />
-                <code className="text-primary text-sm">.fam help_terminal</code>
-              </p>
-            </div>
-            <div className="flex gap-12 border-l border-white/5 pl-12">
-              <div className="text-right">
-                <p className="text-[9px] uppercase font-black text-white/20 tracking-widest mb-2">
-                  Maximum Rank
-                </p>
-                <p className="font-serif text-3xl text-primary uppercase italic tracking-tighter">
-                  10 Prestige
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-[9px] uppercase font-black text-white/20 tracking-widest mb-2">
-                  Capture System
-                </p>
-                <p className="font-serif text-3xl text-white uppercase italic tracking-tighter">
-                  Online
-                </p>
-              </div>
             </div>
           </div>
         </div>
