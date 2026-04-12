@@ -45,7 +45,7 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <SnowParticles />
+          {/* <SnowParticles /> */}
           <BackgroundMusic />
           <Navbar />
           {children}
